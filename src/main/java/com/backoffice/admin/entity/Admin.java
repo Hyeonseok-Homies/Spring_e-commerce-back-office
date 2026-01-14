@@ -27,5 +27,6 @@ public class Admin extends BaseEntity{
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.role = role;
+        this.status = "승인대기";
     }
 }
