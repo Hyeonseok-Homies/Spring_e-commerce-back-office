@@ -20,7 +20,6 @@ public class Product extends BaseEntity {
   @NotBlank
   @Column(nullable = false, length = 50)
   private String name;
-
   private String category;
   private Long price;
   private Long stock;
