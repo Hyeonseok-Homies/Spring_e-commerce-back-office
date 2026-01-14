@@ -10,4 +10,3 @@ public class ProductCreateRequest {
   private Long stock;
   private String status;
 }
-

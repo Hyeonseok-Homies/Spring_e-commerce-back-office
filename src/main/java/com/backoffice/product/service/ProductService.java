@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +43,20 @@ public class ProductService {
 
   @Transactional(readOnly = true)
   public List<ProductGetResponse> getAll() {
-    List<Product> product = productRepository.findAll();
+    List<Product> products = productRepository.findAll();
+    return products.stream()
+        .map(
+            product ->
+                new ProductGetResponse(
+                    product.getId(),
+                    product.getName(),
+                    product.getCategory(),
+                    product.getPrice(),
+                    product.getStock(),
+                    product.getStatus(),
+                    product.getCreateAt(),
+                    product.getUpdatedAt(),
+                    product.getCreatedByAdminId()))
+        .toList();
   }
 }
