@@ -12,58 +12,60 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "admins")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)//생성,수정일 자동화
-public class Admin extends BaseEntity{
+@EntityListeners(AuditingEntityListener.class) // 생성,수정일 자동화
+public class Admin extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@OneToMany(mappedBy = "Product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Long id;
-    @Column(nullable = false)
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  // @OneToMany(mappedBy = "Product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Long id;
 
-    @Column(nullable = false)
-    private String password;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+  @Column(nullable = false)
+  private String password;
 
-    @Column(nullable = false)
-    private String phonenumber;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Enumerated(EnumType.STRING)
-    private AdminRole role;
+  @Column(nullable = false)
+  private String phonenumber;
 
-    @Enumerated(EnumType.STRING)
-    private AdminStatus status;
+  @Enumerated(EnumType.STRING)
+  private AdminRole role;
 
-    private LocalDateTime approvedAt;
-    private LocalDateTime rejectedAt;
+  @Enumerated(EnumType.STRING)
+  private AdminStatus status;
 
-    private String rejectionReason;
+  private LocalDateTime approvedAt;
+  private LocalDateTime rejectedAt;
 
-    //관리자 정보 수정
-    public void updateInfo(Admin admin) {
-        this.name = admin.name;
-        this.email = admin.email;
-        this.phonenumber = admin.phonenumber;
+  private String rejectionReason;
+
+  // 관리자 정보 수정
+  public void updateInfo(Admin admin) {
+    this.name = admin.name;
+    this.email = admin.email;
+    this.phonenumber = admin.phonenumber;
+  }
+
+  // 관리자 역할 변경
+  public void approve() {
+    if (this.status != AdminStatus.PENDING) {
+      throw new IllegalStateException("승인 대기 상태인 관리자만 승인할수 있습니다.");
     }
+    this.status = AdminStatus.ACTIVE;
+    this.approvedAt = LocalDateTime.now();
+  }
 
-    //관리자 역할 변경
-    public void approve() {
-        if(this.status != AdminStatus.PENDING){
-            throw new IllegalStateException("승인 대기 상태인 관리자만 승인할수 있습니다.");
-        }
-        this.status = AdminStatus.ACTIVE;
-        this.approvedAt = LocalDateTime.now();
+  // 거부 처리
+  public void reject(String reason) {
+    if (this.status != AdminStatus.PENDING) {
+      throw new IllegalStateException("승인 대기 상태인 관리자만 승인할수 있습니다.");
     }
-    //거부 처리
-    public void reject(String reason) {
-        if(this.status != AdminStatus.PENDING){
-            throw new IllegalStateException("승인 대기 상태인 관리자만 승인할수 있습니다.");
-        }
-        this.status = AdminStatus.REJECTED;
-        this.rejectedAt = LocalDateTime.now();
-        this.rejectionReason = reason;
-    }
+    this.status = AdminStatus.REJECTED;
+    this.rejectedAt = LocalDateTime.now();
+    this.rejectionReason = reason;
+  }
 }
