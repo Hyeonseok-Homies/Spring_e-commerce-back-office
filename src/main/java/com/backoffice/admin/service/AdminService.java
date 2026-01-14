@@ -31,8 +31,7 @@ public class AdminService {
             request.getEmail(),
             encodedPassword, // 암호화된 비밀번호
             request.getPhoneNumber(),
-            request.getRole()
-        );
+            request.getRole());
     Admin savedAdmin = adminRepository.save(admin);
     return new AdminSignupResponse(
         savedAdmin.getId(),
