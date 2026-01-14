@@ -26,7 +26,7 @@ public class AdminSignupResponse {
       AdminRole role,
       AdminStatus status,
       LocalDateTime createdAt,
-      LocalDateTime modifiedAt) {
+      LocalDateTime approvedAt) {
     this.id = id;
     this.name = name;
     this.email = email;

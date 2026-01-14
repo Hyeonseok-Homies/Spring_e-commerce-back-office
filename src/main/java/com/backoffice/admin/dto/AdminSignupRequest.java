@@ -1,5 +1,6 @@
 package com.backoffice.admin.dto;
 
+import com.backoffice.admin.entity.AdminRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -30,5 +31,5 @@ public class AdminSignupRequest {
 
   // 필수값 누락에 대한 에러처리
   @NotBlank(message = "역할은 필수 입력 사항입니다.")
-  private String role;
+  private AdminRole role;
 }
