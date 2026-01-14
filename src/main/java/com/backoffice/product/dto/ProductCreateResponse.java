@@ -1,5 +1,6 @@
 package com.backoffice.product.dto;
 
+import com.backoffice.product.entity.ProductStatus;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public class ProductCreateResponse {
   private final String category;
   private final Long price;
   private final Long stock;
-  private final String status;
+  private final ProductStatus status;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
   private final Long createdByAdminId;
@@ -23,7 +24,7 @@ public class ProductCreateResponse {
       String category,
       Long price,
       Long stock,
-      String status,
+      ProductStatus status,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
       Long createdByAdminId) {

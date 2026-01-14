@@ -25,18 +25,19 @@ public class ProductController {
     return ResponseEntity.status(HttpStatus.OK).body(productService.getAll());
   }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<ProductGetResponse> getOne(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getOne(id));
-    }
+  @GetMapping("/products/{id}")
+  public ResponseEntity<ProductGetResponse> getOne(@PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(productService.getOne(id));
+  }
 
-    @PutMapping("/products/{id}")
-    public ResponseEntity<ProductUpdateResponse> update(@PathVariable Long id, @RequestBody ProductUpdateRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.update(id,request));
-    }
+  @PutMapping("/products/{id}")
+  public ResponseEntity<ProductUpdateResponse> update(
+      @PathVariable Long id, @RequestBody ProductUpdateRequest request) {
+    return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, request));
+  }
 
-    @DeleteMapping("/products/{id}")
-    public void delete(@PathVariable Long id) {
-      productService.delete(id);
-    }
+  @DeleteMapping("/products/{id}")
+  public void delete(@PathVariable Long id) {
+    productService.delete(id);
+  }
 }
