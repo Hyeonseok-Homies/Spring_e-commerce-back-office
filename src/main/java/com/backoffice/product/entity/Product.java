@@ -34,4 +34,12 @@ public class Product extends BaseEntity {
     this.status = status;
     this.createdByAdminId = createdByAdminId;
   }
+
+  public void update(String name, Long price, String category, Long stock, String status) {
+      this.name = name;
+      this.price = price;
+      this.category = category;
+      this.stock = stock;
+      this.status = status;
+  }
 }

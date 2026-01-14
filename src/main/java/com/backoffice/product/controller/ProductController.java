@@ -5,10 +5,7 @@ import com.backoffice.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,4 +24,19 @@ public class ProductController {
   public ResponseEntity<List<ProductGetResponse>> getAll() {
     return ResponseEntity.status(HttpStatus.OK).body(productService.getAll());
   }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<ProductGetResponse> getOne(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getOne(id));
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<ProductUpdateResponse> update(@PathVariable Long id, @RequestBody ProductUpdateRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.update(id,request));
+    }
+
+    @DeleteMapping("/products/{id}")
+    public void delete(@PathVariable Long id) {
+      productService.delete(id);
+    }
 }
