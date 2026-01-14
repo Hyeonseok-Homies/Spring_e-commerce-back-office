@@ -2,6 +2,7 @@ package com.backoffice.product.dto;
 
 import lombok.Getter;
 
+
 @Getter
 public class ProductCreateRequest {
   private String name;

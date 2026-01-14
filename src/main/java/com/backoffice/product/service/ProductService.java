@@ -41,8 +41,8 @@ public class ProductService {
         savedProduct.getCreatedByAdminId());
   }
 
-    @Transactional(readOnly = true)
-    public List<ProductGetResponse> getAll() {
-      List<Product> product = productRepository.findAll();
-    };
+  @Transactional(readOnly = true)
+  public List<ProductGetResponse> getAll() {
+    List<Product> product = productRepository.findAll();
+  }
 }
