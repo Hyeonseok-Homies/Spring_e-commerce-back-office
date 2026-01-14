@@ -44,5 +44,5 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductGetResponse> getAll() {
       List<Product> product = productRepository.findAll();
-    }
+    };
 }
