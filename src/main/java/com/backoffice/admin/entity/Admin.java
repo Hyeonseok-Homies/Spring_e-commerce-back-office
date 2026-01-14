@@ -44,12 +44,12 @@ public class Admin extends BaseEntity {
   private String rejectionReason;
 
   // 회원가입
-  public Admin(String name, String email, String password, String phoneNumber, String role) {
+  public Admin(String name, String email, String password, String phoneNumber, AdminRole role) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.phoneNumber = phoneNumber;
-    this.role = AdminRole.valueOf(role);
+    this.role = role;
   }
 
   // 관리자 정보 수정
