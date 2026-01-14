@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class AdminRequestLogin {
+public class AdminLoginRequest {
   @Email(message = "잘못된 이메일 형식입니다.")
   private String email;
 

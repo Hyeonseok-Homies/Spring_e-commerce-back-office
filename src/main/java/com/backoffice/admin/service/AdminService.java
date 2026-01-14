@@ -1,19 +1,22 @@
 package com.backoffice.admin.service;
 
 import com.backoffice.admin.dto.AdminLoginResponse;
-import com.backoffice.admin.dto.AdminRequestLogin;
+import com.backoffice.admin.dto.AdminLoginRequest;
 import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.repository.AdminRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
   private final AdminRepository adminRepository;
+  //private final PasswordEncoder passwordEncoder;
 
-  public AdminLoginResponse login(@Valid AdminRequestLogin request) {
+  @Transactional(readOnly = true)
+  public AdminLoginResponse login(@Valid AdminLoginRequest request) {
     Admin admin =
         adminRepository
             .findByEmail(request.getEmail())

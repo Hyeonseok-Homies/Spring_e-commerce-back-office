@@ -1,7 +1,7 @@
 package com.backoffice.admin.controller;
 
 import com.backoffice.admin.dto.AdminLoginResponse;
-import com.backoffice.admin.dto.AdminRequestLogin;
+import com.backoffice.admin.dto.AdminLoginRequest;
 import com.backoffice.admin.dto.SessionAdmin;
 import com.backoffice.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +20,7 @@ public class AdminController {
 
   @PostMapping("/admins/login")
   public ResponseEntity<String> login(
-      @Valid @RequestBody AdminRequestLogin request, HttpSession session) {
+      @Valid @RequestBody AdminLoginRequest request, HttpSession session) {
     AdminLoginResponse result = adminService.login(request);
     // 세션에 id, email, role 저장
     SessionAdmin sessionAdmin =
