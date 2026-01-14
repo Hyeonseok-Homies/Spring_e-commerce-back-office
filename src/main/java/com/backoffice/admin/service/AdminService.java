@@ -18,20 +18,21 @@ public class AdminService {
 
   @Transactional
   public AdminSignupResponse save(AdminSignupRequest request) {
-
+    // 이메일 중복 체크
     if (adminRepository.existsByEmail(request.getEmail())) {
       throw new IllegalStateException("이미 사용 중인 이메일입니다.");
     }
-
+    // 비밀번호 암호화
     String encodedPassword = passwordEncoder.encode(request.getPassword());
-
+    // 승인대기 status는 Admin 생성자에서 자동 세팅
     Admin admin =
         new Admin(
             request.getName(),
             request.getEmail(),
             encodedPassword, // 암호화된 비밀번호
             request.getPhoneNumber(),
-            request.getRole());
+            request.getRole()
+        );
     Admin savedAdmin = adminRepository.save(admin);
     return new AdminSignupResponse(
         savedAdmin.getId(),
