@@ -1,13 +1,13 @@
 package com.backoffice.product.controller;
 
 import com.backoffice.product.dto.*;
+import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +21,17 @@ public class ProductController {
   }
 
   @GetMapping("/products")
-  public ResponseEntity<List<ProductGetResponse>> getAll() {
-    return ResponseEntity.status(HttpStatus.OK).body(productService.getAll());
+  public ResponseEntity<Page<ProductGetResponse>> getAll(
+      @RequestParam String name,
+      @RequestParam(defaultValue = "1") Integer page,
+      @RequestParam(defaultValue = "10 ") Integer size,
+      @RequestParam(defaultValue = "createdAt") String sortBy,
+      @RequestParam(defaultValue = "desc") String sortOrder,
+      @RequestParam(required = false) String category,
+      @RequestParam(required = false) ProductStatus status) {
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(productService.getAll(name, page, size, sortBy, sortOrder, category, status));
   }
 
   @GetMapping("/products/{id}")
