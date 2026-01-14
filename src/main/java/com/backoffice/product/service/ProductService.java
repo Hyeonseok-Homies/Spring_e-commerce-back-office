@@ -87,23 +87,19 @@ public class ProductService {
 
   // 상품 정보 수정 Clear
   // 상품명, 카테고리, 가격, 상품 상태 변경 가능
-  @Transactional // 수정을 위해 readOnly = true 제거
+  @Transactional
   public ProductUpdateResponse update(Long id, ProductUpdateRequest request) {
-    // 1. 상품 존재 여부 확인
     Product product =
         productRepository
             .findById(id)
             .orElseThrow(() -> new IllegalStateException("존재하지 않는 물품 입니다."));
 
-    // 2. 엔티티 내부의 통합 로직 호출 (정보 수정 + 재고/상태 정합성 체크)
     product.update(
         request.getName(),
         request.getPrice(),
         request.getCategory(),
         request.getStock(),
         request.getStatus());
-
-    // 3. 수정된 결과 반환
     return new ProductUpdateResponse(
         product.getId(),
         product.getName(),

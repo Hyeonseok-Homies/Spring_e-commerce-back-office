@@ -23,7 +23,7 @@ public class Product extends BaseEntity {
   private String category;
   private Long price;
   private Long stock;
-  @Enumerated(EnumType.STRING) // Enum을 DB에 문자열로 저장
+  @Enumerated(EnumType.STRING)
   private ProductStatus status;
   private Long createdByAdminId;
 
