@@ -1,7 +1,6 @@
 package com.backoffice.admin.controller;
 
-import com.backoffice.admin.dto.AdminSignupRequest;
-import com.backoffice.admin.dto.AdminSignupResponse;
+import com.backoffice.admin.dto.*;
 import com.backoffice.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -24,7 +23,9 @@ public class AdminController {
   public ResponseEntity<AdminSignupResponse> signup(
       @Valid @RequestBody AdminSignupRequest request) {
     return ResponseEntity.status(HttpStatus.CREATED).body(adminService.save(request));
-  @PostMapping("/admins/login")
+  }
+
+  @PostMapping("/api/admins/login")
   public ResponseEntity<String> login(
       @Valid @RequestBody AdminLoginRequest request, HttpSession session) {
     AdminLoginResponse result = adminService.login(request);
@@ -37,7 +38,7 @@ public class AdminController {
     return ResponseEntity.ok().body("로그인 완료");
   }
 
-  @PostMapping("/admins/logout")
+  @PostMapping("/api/admins/logout")
   public ResponseEntity<Void> logout(
       @SessionAttribute(name = "loginAdmin", required = false) SessionAdmin sessionAdmin,
       HttpSession session) {

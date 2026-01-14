@@ -28,9 +28,6 @@ public class AdminService {
     // 비밀번호 암호화
     String encodedPassword = passwordEncoder.encode(request.getPassword());
     // 승인대기 status는 Admin 생성자에서 자동 세팅
-
-  @Transactional(readOnly = true)
-  public AdminLoginResponse login(@Valid AdminLoginRequest request) {
     Admin admin =
         new Admin(
             request.getName(),
@@ -48,12 +45,17 @@ public class AdminService {
         savedAdmin.getStatus(),
         savedAdmin.getCreatedAt(),
         savedAdmin.getApprovedAt());
+  }
+
+  @Transactional(readOnly = true)
+  public AdminLoginResponse login(@Valid AdminLoginRequest request) {
+    Admin admin =
         adminRepository
             .findByEmail(request.getEmail())
             .orElseThrow(() -> new IllegalStateException("존재하지 않는 이메일입니다."));
-    // if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
-    //    throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
-    // }
+    if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
+      throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+    }
     switch (admin.getStatus()) {
       case INACTIVE -> throw new IllegalStateException("계정이 비활성 상태입니다.");
       case SUSPENDED -> throw new IllegalStateException("계정이 정지 상태입니다.");
