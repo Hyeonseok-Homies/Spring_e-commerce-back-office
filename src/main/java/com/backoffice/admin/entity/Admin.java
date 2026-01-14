@@ -30,7 +30,7 @@ public class Admin extends BaseEntity {
   private String email;
 
   @Column(nullable = false)
-  private String phonenumber;
+  private String phoneNumber;
 
   @Enumerated(EnumType.STRING)
   private AdminRole role;
@@ -47,7 +47,7 @@ public class Admin extends BaseEntity {
   public void updateInfo(Admin admin) {
     this.name = admin.name;
     this.email = admin.email;
-    this.phonenumber = admin.phonenumber;
+    this.phoneNumber = admin.phoneNumber;
   }
 
   // 관리자 역할 변경
