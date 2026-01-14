@@ -13,35 +13,34 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdminService {
 
-    private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
+  private final AdminRepository adminRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public AdminSignupResponse save(AdminSignupRequest request) {
+  @Transactional
+  public AdminSignupResponse save(AdminSignupRequest request) {
 
-        if (adminRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalStateException("이미 사용 중인 이메일입니다.");
-        }
-
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
-
-        Admin admin = new Admin(
-                request.getName(),
-                request.getEmail(),
-                encodedPassword, // 암호화된 비밀번호
-                request.getPhoneNumber(),
-                request.getRole()
-        );
-        Admin savedAdmin = adminRepository.save(admin);
-        return new AdminSignupResponse(
-                savedAdmin.getId(),
-                savedAdmin.getName(),
-                savedAdmin.getEmail(),
-                savedAdmin.getPhoneNumber(),
-                savedAdmin.getRole(),
-                savedAdmin.getStatus(),
-                savedAdmin.getCreatedAt(),
-                savedAdmin.getApprovedAt()
-        );
+    if (adminRepository.existsByEmail(request.getEmail())) {
+      throw new IllegalStateException("이미 사용 중인 이메일입니다.");
     }
+
+    String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+    Admin admin =
+        new Admin(
+            request.getName(),
+            request.getEmail(),
+            encodedPassword, // 암호화된 비밀번호
+            request.getPhoneNumber(),
+            request.getRole());
+    Admin savedAdmin = adminRepository.save(admin);
+    return new AdminSignupResponse(
+        savedAdmin.getId(),
+        savedAdmin.getName(),
+        savedAdmin.getEmail(),
+        savedAdmin.getPhoneNumber(),
+        savedAdmin.getRole(),
+        savedAdmin.getStatus(),
+        savedAdmin.getCreatedAt(),
+        savedAdmin.getApprovedAt());
+  }
 }

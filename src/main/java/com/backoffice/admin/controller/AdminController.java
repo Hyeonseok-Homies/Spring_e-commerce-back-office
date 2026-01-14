@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final AdminService adminService;
+  private final AdminService adminService;
 
-    @PostMapping("/admins/signup")
-    public ResponseEntity<AdminSignupResponse> signup(
-            @Valid @RequestBody AdminSignupRequest request
-    ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.save(request));
-    }
+  // 회원가입 controller
+  @PostMapping("/admins/signup")
+  public ResponseEntity<AdminSignupResponse> signup(
+      @Valid @RequestBody AdminSignupRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(adminService.save(request));
+  }
 }
