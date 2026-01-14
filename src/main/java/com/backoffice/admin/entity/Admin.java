@@ -29,7 +29,7 @@ public class Admin extends BaseEntity{
     private String email;
 
     @Column(nullable = false)
-    private String phonenumber;
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     private AdminRole role;
@@ -42,11 +42,19 @@ public class Admin extends BaseEntity{
 
     private String rejectionReason;
 
+    public Admin(String name, String email, String password, String phoneNumber, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.role = AdminRole.valueOf(role);
+    }
+
     //관리자 정보 수정
     public void updateInfo(Admin admin) {
         this.name = admin.name;
         this.email = admin.email;
-        this.phonenumber = admin.phonenumber;
+        this.phoneNumber = admin.phoneNumber;
     }
 
     //관리자 역할 변경

@@ -1,5 +1,7 @@
 package com.backoffice.admin.dto;
 
+import com.backoffice.admin.entity.AdminRole;
+import com.backoffice.admin.entity.AdminStatus;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,13 +13,13 @@ public class AdminSignupResponse {
     private final String name;
     private final String email;
     private final String phoneNumber;
-    private final String role;
-    private final String status;
+    private final AdminRole role;
+    private final AdminStatus status;
     private final LocalDateTime createdAt;
-    private final LocalDateTime modifiedAt;
+    private final LocalDateTime approvedAt;
 
 
-    public AdminSignupResponse(Long id, String name, String email, String phoneNumber, String role, String status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public AdminSignupResponse(Long id, String name, String email, String phoneNumber, AdminRole role, AdminStatus status, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -25,6 +27,6 @@ public class AdminSignupResponse {
         this.role = role;
         this.status = status;
         this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
+        this.approvedAt = getApprovedAt();
     }
 }

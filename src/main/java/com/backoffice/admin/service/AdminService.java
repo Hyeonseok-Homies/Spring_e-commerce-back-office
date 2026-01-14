@@ -41,7 +41,7 @@ public class AdminService {
                 savedAdmin.getRole(),
                 savedAdmin.getStatus(),
                 savedAdmin.getCreatedAt(),
-                savedAdmin.getModifiedAt()
+                savedAdmin.getApprovedAt()
         );
     }
 }
