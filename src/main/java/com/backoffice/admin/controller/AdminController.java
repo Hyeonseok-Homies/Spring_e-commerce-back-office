@@ -20,12 +20,15 @@ public class AdminController {
     @PostMapping("/admins/login")
     public ResponseEntity<String> login(@Valid @RequestBody AdminRequestLogin request, HttpSession session) {
         AdminLoginResponse result = adminService.login(request);
+        //세션에 id, email, role 저장
         SessionAdmin sessionAdmin = new SessionAdmin(
                 result.getId(),
                 result.getEmail(),
                 result.getRole()
         );
         session.setAttribute("loginAdmin", sessionAdmin);
+        //세션 생명주기 24시간
+        session.setMaxInactiveInterval(86400);
         return ResponseEntity.ok().body("로그인 완료");
     }
 }
