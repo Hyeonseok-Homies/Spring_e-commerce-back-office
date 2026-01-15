@@ -50,6 +50,7 @@ public class Admin extends BaseEntity {
     this.password = password;
     this.phoneNumber = phoneNumber;
     this.role = role;
+    this.status = AdminStatus.PENDING;
   }
 
   // 관리자 정보 수정
