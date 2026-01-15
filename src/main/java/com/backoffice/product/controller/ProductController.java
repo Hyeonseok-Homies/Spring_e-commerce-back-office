@@ -1,9 +1,12 @@
 package com.backoffice.product.controller;
 
+import com.backoffice.admin.dto.SessionAdmin;
 import com.backoffice.admin.service.AdminService;
 import com.backoffice.product.dto.*;
 import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.service.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,7 +22,12 @@ public class ProductController {
 
   @PostMapping("/products")
   public ResponseEntity<ProductCreateResponse> create(
-      @RequestBody ProductCreateRequest request, Long adminId) {
+      @RequestBody ProductCreateRequest request, HttpServletRequest httpRequest) {
+
+    HttpSession httpSession = httpRequest.getSession(false);
+    SessionAdmin sessionAdmin = (SessionAdmin) httpSession.getAttribute("loginAdmin");
+    Long adminId = sessionAdmin.getId();
+
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(request, adminId));
   }
 
