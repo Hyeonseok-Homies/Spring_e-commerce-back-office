@@ -15,18 +15,19 @@ public class Customer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
+    private String password;
+
+    @Column(nullable = false, length = 13)
     private String phoneNumber;
 
+    @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private CustomerStatus status;
 
