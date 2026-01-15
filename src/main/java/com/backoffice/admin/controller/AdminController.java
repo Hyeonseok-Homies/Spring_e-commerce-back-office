@@ -8,7 +8,11 @@ import com.backoffice.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,14 +20,45 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final AdminService adminService;
+  private final AdminService adminService;
 
+    // 회원가입 controller
+    @PostMapping("/signup")
+    public ResponseEntity<AdminSignupResponse> signup(
+            @Valid @RequestBody AdminSignupRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.save(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(
+            @Valid @RequestBody AdminLoginRequest request, HttpSession session) {
+        AdminLoginResponse result = adminService.login(request);
+        // 세션에 id, email, role 저장
+        SessionAdmin sessionAdmin =
+                new SessionAdmin(result.getId(), result.getEmail(), result.getRole());
+        session.setAttribute("loginAdmin", sessionAdmin);
+        // 세션 생명주기 24시간
+        session.setMaxInactiveInterval(86400);
+        return ResponseEntity.ok().body("로그인 완료");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @SessionAttribute(name = "loginAdmin", required = false) SessionAdmin sessionAdmin,
+            HttpSession session) {
+        if (sessionAdmin == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        session.invalidate();
+        return ResponseEntity.ok().build();
+    }
+
+    //------------------전민우------------------
     // ================= [내 프로필 관리 API] =================
-    //정적 경로(/me)를 변수 경로(/{id})보다 상단에 두어 경로 충돌을 방지함
 
     @GetMapping("/me")
     public ResponseEntity<AdminDetailResponseDto> getMyProfile(HttpSession session) {
-        AdminSessionDto adminSession = (AdminSessionDto) session.getAttribute("LOGIN_ADMIN");
+        SessionAdmin adminSession = (SessionAdmin) session.getAttribute("loginAdmin");
 
         if (adminSession == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
@@ -38,7 +73,7 @@ public class AdminController {
             @Valid @RequestBody AdminUpdateRequestDto requestDto) {
 
         // 세션 키("LOGIN_ADMIN")로 정보를 꺼내기 팀원 내용확인하기
-        AdminSessionDto adminSession = (AdminSessionDto) session.getAttribute("LOGIN_ADMIN");
+        SessionAdmin adminSession = (SessionAdmin) session.getAttribute("loginAdmin");
 
         // 로그인 체크 팀원님이 구현해두었으면 생략가능
         if (adminSession == null) {
@@ -54,7 +89,7 @@ public class AdminController {
             @Valid @RequestBody PasswordChangeRequestDto requestDto) {
 
         // 세션 키("LOGIN_ADMIN")로 정보를 꺼내기 팀원 내용확인하기
-        AdminSessionDto adminSession = (AdminSessionDto) session.getAttribute("LOGIN_ADMIN");
+        SessionAdmin adminSession = (SessionAdmin) session.getAttribute("loginAdmin");
 
         // 로그인 체크 팀원님이 구현해두었으면 생략가능
         if (adminSession == null) {
@@ -127,4 +162,6 @@ public class AdminController {
         adminService.deleteAdmin(id);
         return ResponseEntity.noContent().build();
     }
+    //------------------전민우------------------
 }
+

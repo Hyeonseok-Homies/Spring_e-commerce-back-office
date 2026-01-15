@@ -16,9 +16,9 @@ public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;//생성일
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedAt;//수정일
+    private LocalDateTime modifiedAt;
 }

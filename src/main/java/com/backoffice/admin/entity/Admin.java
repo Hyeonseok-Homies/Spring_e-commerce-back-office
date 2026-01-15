@@ -11,64 +11,63 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "admins")
-@EntityListeners(AuditingEntityListener.class)//생성,수정일 자동화
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)//생성,수정일 자동화
 public class Admin extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@OneToMany(mappedBy = "Product", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @OneToMany(mappedBy = "Product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Long id;
-    @Column(nullable = false)//필수값
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)//필수값+중복x
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private AdminRole role;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private AdminStatus status;
 
-    private LocalDateTime approvedAt;//승인 시간
-    private LocalDateTime rejectedAt;//거부 시간
+    private LocalDateTime approvedAt;
+    private LocalDateTime rejectedAt;
 
-    private String rejectionReason;//거부 사유
+    private String rejectionReason;
 
-    //생성자
-    public Admin(String name, String password, String email, String phoneNumber, AdminRole role, AdminStatus status) {
+    // 회원가입
+    public Admin(String name, String email, String password, String phoneNumber, AdminRole role) {
         this.name = name;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
-        this.role = role;//객체가 저장
-        this.status = status;//객체가 저장
+        this.role = role;
+        this.status = AdminStatus.PENDING;
     }
 
-    //관리자 정보 수정
+    // 관리자 정보 수정
     public void updateInfo(String name, String email, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    //관리자 승인
+    // 관리자 역할 변경
     public void approve(AdminRole role) {
-        if(this.status != AdminStatus.PENDING){//상태가 대기가 아니면
+        if (this.status != AdminStatus.PENDING) {
             throw new IllegalStateException("승인 대기 상태인 관리자만 승인할수 있습니다.");
         }
-        this.status = AdminStatus.ACTIVE;//활성 상태로 변경
-        this.role = role;//역할을 부여
-        this.approvedAt = LocalDateTime.now();//수정시간
+        this.status = AdminStatus.ACTIVE;
+        this.approvedAt = LocalDateTime.now();
+        this.role = role;
     }
 
     //거부 처리

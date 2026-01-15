@@ -1,11 +1,20 @@
 package com.backoffice.admin.service;
 
+import com.backoffice.admin.config.PasswordEncoder;
 import com.backoffice.admin.dto.*;
 import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.entity.AdminRole;
 import com.backoffice.admin.entity.AdminStatus;
+import com.backoffice.admin.entity.AdminRole;
+import com.backoffice.admin.entity.AdminStatus;
 import com.backoffice.admin.repository.AdminRepository;
+import jakarta.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +25,66 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminService {
 
     private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    @Transactional
+    public AdminSignupResponse save(AdminSignupRequest request) {
+        // 이메일 중복 체크
+        if (adminRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+        }
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        // 승인대기 status는 Admin 생성자에서 자동 세팅
+        Admin admin =
+                new Admin(
+                        request.getName(),
+                        request.getEmail(),
+                        encodedPassword, // 암호화된 비밀번호
+                        request.getPhoneNumber(),
+                        request.getRole());
+        Admin savedAdmin = adminRepository.save(admin);
+        return new AdminSignupResponse(
+                savedAdmin.getId(),
+                savedAdmin.getName(),
+                savedAdmin.getEmail(),
+                savedAdmin.getPhoneNumber(),
+                savedAdmin.getRole(),
+                savedAdmin.getStatus(),
+                savedAdmin.getCreatedAt(),
+                savedAdmin.getApprovedAt());
+    }
+
+    @Transactional(readOnly = true)
+    public AdminLoginResponse login(@Valid AdminLoginRequest request) {
+        Admin admin =
+                adminRepository
+                        .findByEmail(request.getEmail())
+                        .orElseThrow(() -> new IllegalStateException("존재하지 않는 이메일입니다."));
+        if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+        switch (admin.getStatus()) {
+            case INACTIVE -> throw new IllegalStateException("계정이 비활성 상태입니다.");
+            case SUSPENDED -> throw new IllegalStateException("계정이 정지 상태입니다.");
+            case PENDING -> throw new IllegalStateException("계정이 승인대기 상태입니다.");
+            case REJECTED -> throw new IllegalStateException("계정이 거부 상태입니다.");
+        }
+
+        return new AdminLoginResponse(
+                admin.getId(), admin.getName(), admin.getStatus(), admin.getRole(), admin.getEmail());
+    }
+
+    //----------------전민우----------------
     // 1. [관리자 리스트 조회] 검색, 페이징, 역할/상태 필터 적용
     public AdminListResponseDto getAdminList(AdminListRequestDto requestDto) {
         //검색 규칙 설정
@@ -127,4 +189,5 @@ public class AdminService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 관리자가 없습니다."));
         admin.changePassword(newPassword); // 엔티티에 해당 메서드 구현 필요
     }
+    //--------------전민우--------
 }
