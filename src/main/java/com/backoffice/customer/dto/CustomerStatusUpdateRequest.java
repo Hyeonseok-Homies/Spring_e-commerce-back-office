@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class CustomerStatusUpdateRequest {
 
-    // Enum status 사용
-    private CustomerStatus status;
+  // Enum status 사용
+  private CustomerStatus status;
 }

@@ -6,6 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class AdminApprovalRequestDto {
-    @NotNull(message = "승인 시 부여할 관리자 역할은 필수 입니다.")
-    private AdminRole role;
+  @NotNull(message = "승인 시 부여할 관리자 역할은 필수 입니다.")
+  private AdminRole role;
 }

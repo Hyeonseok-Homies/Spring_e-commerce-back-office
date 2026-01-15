@@ -1,4 +1,4 @@
-package com.backoffice.admin.config;
+package com.backoffice.Error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

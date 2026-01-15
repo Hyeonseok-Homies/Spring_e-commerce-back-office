@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AdminStatusUpdateDto {
-    @NotNull(message = "변경할 상태는 필수입니다.")
-    private AdminStatus status;
+  @NotNull(message = "변경할 상태는 필수입니다.")
+  private AdminStatus status;
 }

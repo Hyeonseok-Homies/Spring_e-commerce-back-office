@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AdminRoleUpdateDto {
-    @NotNull(message = "변경할 역할은 필수입니다.")
-    private AdminRole role;
+  @NotNull(message = "변경할 역할은 필수입니다.")
+  private AdminRole role;
 }
