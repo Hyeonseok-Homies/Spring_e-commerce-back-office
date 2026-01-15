@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/products")
 public class ProductController {
 
   private final ProductService productService;
   private final AdminService adminService;
 
-  @PostMapping("/products")
+  @PostMapping
   public ResponseEntity<ProductCreateResponse> create(
       @RequestBody ProductCreateRequest request, HttpServletRequest httpRequest) {
 
@@ -31,7 +32,7 @@ public class ProductController {
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(request, adminId));
   }
 
-  @GetMapping("/products")
+  @GetMapping
   public ResponseEntity<Page<ProductGetResponse>> getAll(
       @RequestParam(required = false) String name,
       @RequestParam(defaultValue = "1") Integer page,
@@ -45,18 +46,18 @@ public class ProductController {
         .body(productService.getAll(name, page, size, sortBy, sortOrder, category, status));
   }
 
-  @GetMapping("/products/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<ProductGetResponse> getOne(@PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(productService.getOne(id));
   }
 
-  @PutMapping("/products/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<ProductUpdateResponse> update(
       @PathVariable Long id, @RequestBody ProductUpdateRequest request) {
     return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, request));
   }
 
-  @DeleteMapping("/products/{id}")
+  @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) {
     productService.delete(id);
   }

@@ -23,15 +23,18 @@ public class Product extends BaseEntity {
   @Column(nullable = false, length = 50)
   private String name;
 
+  @NotBlank
+  @Column(nullable = false, length = 50)
   private String category;
-  private Long price;
+
+  @NotNull private Long price;
   private Long stock;
 
   @Enumerated(EnumType.STRING)
   private ProductStatus status;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "created_by_admin_id")
+  @JoinColumn(name = "Created_By_Admin_Id")
   private Admin admin;
 
   public Product(
