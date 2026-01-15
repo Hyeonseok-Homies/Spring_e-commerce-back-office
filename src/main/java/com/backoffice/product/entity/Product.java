@@ -31,7 +31,7 @@ public class Product extends BaseEntity {
   private ProductStatus status;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "Created_By_Admin_Id")
+  @JoinColumn(name = "created_by_admin_id")
   private Admin admin;
 
   public Product(
