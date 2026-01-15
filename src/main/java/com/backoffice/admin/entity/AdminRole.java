@@ -10,5 +10,5 @@ public enum AdminRole {
     OPERATOR("운영 관리자"),
     CS("CS 관리자");
 
-    private final String description;//입력받은 description에 해당하는 역할부여
+    private final String description;// 각 상태에 대한 한글 설명(메타데이터) 저장
 }
