@@ -1,5 +1,6 @@
 package com.backoffice.product.dto;
 
+import com.backoffice.product.entity.Product;
 import com.backoffice.product.entity.ProductStatus;
 import lombok.Getter;
 
@@ -15,26 +16,19 @@ public class ProductUpdateResponse {
   private final ProductStatus status;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private final Long createdByAdminId;
+  private final String adminName;
+  private final String adminEmail;
 
-  public ProductUpdateResponse(
-      Long id,
-      String name,
-      String category,
-      Long price,
-      Long stock,
-      ProductStatus status,
-      LocalDateTime createdAt,
-      LocalDateTime updatedAt,
-      Long createdByAdminId) {
-    this.id = id;
-    this.name = name;
-    this.category = category;
-    this.price = price;
-    this.stock = stock;
-    this.status = status;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.createdByAdminId = createdByAdminId;
+  public ProductUpdateResponse(Product product) {
+    this.id = product.getId();
+    this.name = product.getName();
+    this.category = product.getCategory();
+    this.price = product.getPrice();
+    this.stock = product.getStock();
+    this.status = product.getStatus();
+    this.createdAt = product.getCreatedAt();
+    this.updatedAt = product.getUpdatedAt();
+    this.adminName = product.getAdmin().getName();
+    this.adminEmail = product.getAdmin().getEmail();
   }
 }

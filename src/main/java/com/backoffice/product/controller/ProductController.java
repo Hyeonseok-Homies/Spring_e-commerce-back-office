@@ -1,5 +1,6 @@
 package com.backoffice.product.controller;
 
+import com.backoffice.admin.service.AdminService;
 import com.backoffice.product.dto.*;
 import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.service.ProductService;
@@ -14,15 +15,17 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductService productService;
+  private final AdminService adminService;
 
   @PostMapping("/products")
-  public ResponseEntity<ProductCreateResponse> create(@RequestBody ProductCreateRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(request));
+  public ResponseEntity<ProductCreateResponse> create(
+      @RequestBody ProductCreateRequest request, Long adminId) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(request, adminId));
   }
 
   @GetMapping("/products")
   public ResponseEntity<Page<ProductGetResponse>> getAll(
-      @RequestParam String name,
+      @RequestParam(required = false) String name,
       @RequestParam(defaultValue = "1") Integer page,
       @RequestParam(defaultValue = "10 ") Integer size,
       @RequestParam(defaultValue = "createdAt") String sortBy,
