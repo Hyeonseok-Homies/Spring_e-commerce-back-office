@@ -12,5 +12,5 @@ public enum AdminStatus {
   PENDING("승인대기"),
   REJECTED("거부");
 
-  private final String description;
+  private final String description;// 각 상태에 대한 한글 설명(메타데이터) 저장
 }
