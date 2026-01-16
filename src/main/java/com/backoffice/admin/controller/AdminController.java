@@ -9,12 +9,16 @@ import com.backoffice.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.data.autoconfigure.web.DataWebProperties;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/admins")
@@ -83,8 +87,12 @@ public class AdminController {
   // 1. 관리자 목록 조회
   @GetMapping
   public ResponseEntity<AdminListResponseDto> getAdminList(
-      @Login SessionAdmin sessionAdmin, @ModelAttribute AdminListRequestDto requestDto) {
-    return ResponseEntity.ok(adminService.getAdminList(requestDto));
+      @Login SessionAdmin sessionAdmin,
+      @RequestParam(required = false) String kw,
+      @RequestParam(required = false) AdminRole role,
+      @RequestParam(required = false) AdminStatus status,
+      @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    return ResponseEntity.ok(adminService.getAdminList(kw, role, status, pageable));
   }
 
   // 2. 관리자 상세 조회

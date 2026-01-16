@@ -1,9 +1,8 @@
 package com.backoffice.admin.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -11,8 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "admins")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class) // 생성,수정일 자동화
+@SuperBuilder // 1. 상속 관계 빌더
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 2. JPA용 기본 생성자
+@AllArgsConstructor // 3. SuperBuilder와 호환되는 전체 생성자
+@EntityListeners(AuditingEntityListener.class)
 public class Admin extends BaseEntity {
 
   @Id
@@ -20,27 +21,29 @@ public class Admin extends BaseEntity {
   // @OneToMany(mappedBy = "Product", cascade = CascadeType.ALL, orphanRemoval = true)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 50)
   private String name;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 255)
   private String password;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = true, length = 50)
   private String email;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 13)
   private String phoneNumber;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 30)
   private AdminRole role;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 30)
   private AdminStatus status;
 
   private LocalDateTime approvedAt;
   private LocalDateTime rejectedAt;
-
+  @Column(length = 100)
   private String rejectionReason;
 
   // 회원가입
@@ -50,7 +53,7 @@ public class Admin extends BaseEntity {
     this.password = password;
     this.phoneNumber = phoneNumber;
     this.role = role;
-    this.status = AdminStatus.ACTIVE;
+    this.status = AdminStatus.PENDING;
   }
 
   // 관리자 정보 수정
