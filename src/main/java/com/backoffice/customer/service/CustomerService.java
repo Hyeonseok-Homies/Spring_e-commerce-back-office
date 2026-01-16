@@ -63,7 +63,7 @@ public class CustomerService {
     Customer customer =
         customerRepository
             .findById(id)
-            .orElseThrow(() -> new IllegalStateException("해당 고객이 없습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
 
     return new CustomerGetResponse(
         customer.getId(),
@@ -79,7 +79,7 @@ public class CustomerService {
     Customer customer =
         customerRepository
             .findById(id)
-            .orElseThrow(() -> new IllegalStateException("해당 고객이 없습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
 
     customer.update(request.getName(), request.getEmail(), request.getPhoneNumber());
 
@@ -93,7 +93,7 @@ public class CustomerService {
     Customer customer =
         customerRepository
             .findById(id)
-            .orElseThrow(() -> new IllegalStateException("해당 고객이 없습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
     customerRepository.delete(customer);
   }
 

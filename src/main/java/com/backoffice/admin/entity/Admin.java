@@ -1,5 +1,6 @@
 package com.backoffice.admin.entity;
 
+import com.backoffice.Error.BadRequestException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -76,7 +77,7 @@ public class Admin extends BaseEntity {
       throw new IllegalStateException("승인 대기 상태인 관리자만 거부할수 있습니다.");
     }
     if (reason == null || reason.isBlank()) { // 8. 요구사항: 거부 사유 필수 입력 항목
-      throw new IllegalArgumentException("거부 사유는 필수입니다.");
+      throw new BadRequestException("거부 사유는 필수입니다.");
     }
     this.status = AdminStatus.REJECTED; // 거부 상태로 변경
     this.rejectedAt = LocalDateTime.now(); // 수정시간
@@ -86,7 +87,7 @@ public class Admin extends BaseEntity {
   // 관리자 역할 변경
   public void changedRole(AdminRole newRole) {
     if (newRole == null) { // 역할이 null이면
-      throw new IllegalArgumentException("변경할 역할은 필수 입니다.");
+      throw new BadRequestException("변경할 역할은 필수 입니다.");
     }
     this.role = newRole; // 새로운 역할을 저장
   }
@@ -94,7 +95,7 @@ public class Admin extends BaseEntity {
   // 관리자 상태 변경
   public void changedStatus(AdminStatus newStatus) {
     if (newStatus == null) { // 새로운 상태가 null이면
-      throw new IllegalStateException("변경할 상태는 필수 입니다.");
+      throw new BadRequestException("변경할 상태는 필수 입니다.");
     }
     this.status = newStatus; // 새로운 상태 저장
   }
@@ -102,7 +103,7 @@ public class Admin extends BaseEntity {
   // 비밀번호 변경
   public void changePassword(String newPassword) {
     if (newPassword == null || newPassword.isBlank()) { // 새로운 패스워드가 null이거나 비어있다면
-      throw new IllegalArgumentException("새 비밀번호는 필수 입력 항목입니다.");
+      throw new BadRequestException("새 비밀번호는 필수 입력 항목입니다.");
     }
     this.password = newPassword; // 비밀번호 변경
   }

@@ -83,7 +83,7 @@ public class AdminController {
   // 1. 관리자 목록 조회
   @GetMapping
   public ResponseEntity<AdminListResponseDto> getAdminList(
-      @Login SessionAdmin sessionAdmin, @ModelAttribute AdminListRequestDto requestDto) {
+      @Login SessionAdmin sessionAdmin, @Valid @ModelAttribute AdminListRequestDto requestDto) {
     return ResponseEntity.ok(adminService.getAdminList(requestDto));
   }
 
