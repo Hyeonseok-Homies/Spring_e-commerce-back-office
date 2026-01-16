@@ -6,6 +6,7 @@ import com.backoffice.customer.dto.*;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.customer.entity.CustomerStatus;
 import com.backoffice.customer.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class CustomerController {
   private final CustomerService customerService;
 
   // 고객 전체 조회
-  @GetMapping
+  @GetMapping("/api/customers")
   public ResponseEntity<Page<CustomerGetResponse>> getAll(
       @Login SessionAdmin sessionAdmin,
       // CustomerGetRequest 정렬조건을 request에 담아서 불러옴
@@ -37,7 +38,8 @@ public class CustomerController {
 
   // 고객 상세 (단건) 조회
   @GetMapping("/{id}")
-  public ResponseEntity<CustomerGetResponse> getById(@PathVariable Long id) {
+  public ResponseEntity<CustomerGetResponse> getById(
+      @Login SessionAdmin sessionAdmin, @PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(customerService.findById(id));
   }
 
@@ -46,24 +48,25 @@ public class CustomerController {
   public ResponseEntity<CustomerUpdateResponse> update(
       @Login SessionAdmin sessionAdmin,
       @PathVariable Long id,
-      @RequestBody CustomerUpdateRequest request) {
+      @Valid @RequestBody CustomerUpdateRequest request) {
     return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id, request));
   }
 
   // 고객 정보 삭제(탈퇴)
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(
-          @PathVariable Long id
-  ) {
-      customerService.delete(id);
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+      @Login SessionAdmin sessionAdmin,
+      @PathVariable Long id,
+      @Valid @RequestBody CustomerDeleteRequest request) {
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   // 상태 변경
   @PatchMapping("/{id}/status")
   public ResponseEntity<Void> updateStatus(
+      @Login SessionAdmin sessionAdmin,
       @PathVariable Long id,
-      @RequestBody CustomerStatusUpdateRequest request) {
+      @Valid @RequestBody CustomerStatusUpdateRequest request) {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

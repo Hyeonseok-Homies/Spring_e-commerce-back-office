@@ -38,18 +38,7 @@ public class ProductService {
 
   @Transactional(readOnly = true)
   public Page<ProductGetResponse> getAll(
-      String name,
-      int page,
-      int size,
-      String sortBy,
-      String direction,
-      String category,
-      ProductStatus status) {
-
-    Sort.Direction sortDirection =
-        direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-
-    Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortDirection, sortBy));
+      String name, String category, ProductStatus status, Pageable pageable) {
 
     Page<Product> products = productRepository.findAllWithFilters(name, category, status, pageable);
 
@@ -61,7 +50,7 @@ public class ProductService {
     Product product =
         productRepository
             .findById(id)
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 물품 입니다."));
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 물품 입니다."));
     return new ProductGetResponse(product);
   }
 
@@ -70,7 +59,7 @@ public class ProductService {
     Product product =
         productRepository
             .findById(id)
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 물품 입니다."));
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 물품 입니다."));
 
     product.update(
         request.getName(),
@@ -85,7 +74,7 @@ public class ProductService {
     Product product =
         productRepository
             .findById(id)
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 물품 입니다."));
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 물품 입니다."));
     productRepository.delete(product);
   }
 }

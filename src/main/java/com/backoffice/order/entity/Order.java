@@ -34,15 +34,15 @@ public class Order extends BaseEntity {
   private OrderStatus status;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "admin_id", nullable = false)
+  @JoinColumn(name = "Created_By_Admin_Id", nullable = false)
   private Admin admin;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "customer_id", nullable = false)
+  @JoinColumn(name = "Created_By_Customer_Id", nullable = false)
   private Customer customer;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
+  @JoinColumn(name = "Created_By_Product_Id", nullable = false)
   private Product product;
 
   public Order(
