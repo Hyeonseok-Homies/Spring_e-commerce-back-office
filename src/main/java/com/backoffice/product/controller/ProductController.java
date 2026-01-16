@@ -1,5 +1,6 @@
 package com.backoffice.product.controller;
 
+import com.backoffice.admin.config.Login;
 import com.backoffice.admin.dto.SessionAdmin;
 import com.backoffice.admin.service.AdminService;
 import com.backoffice.product.dto.*;
@@ -19,14 +20,13 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductService productService;
-  private final AdminService adminService;
 
   @PostMapping
   public ResponseEntity<ProductCreateResponse> create(
-      @RequestBody ProductCreateRequest request, HttpServletRequest httpRequest) {
+      @Login SessionAdmin sessionAdmin,
+      @RequestBody ProductCreateRequest request,
+      HttpServletRequest httpRequest) {
 
-    HttpSession httpSession = httpRequest.getSession(false);
-    SessionAdmin sessionAdmin = (SessionAdmin) httpSession.getAttribute("loginAdmin");
     Long adminId = sessionAdmin.getId();
 
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(request, adminId));
@@ -34,6 +34,7 @@ public class ProductController {
 
   @GetMapping
   public ResponseEntity<Page<ProductGetResponse>> getAll(
+      @Login SessionAdmin sessionAdmin,
       @RequestParam(required = false) String name,
       @RequestParam(defaultValue = "1") Integer page,
       @RequestParam(defaultValue = "10 ") Integer size,
@@ -47,18 +48,21 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductGetResponse> getOne(@PathVariable Long id) {
+  public ResponseEntity<ProductGetResponse> getOne(
+      @Login SessionAdmin sessionAdmin, @PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(productService.getOne(id));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<ProductUpdateResponse> update(
-      @PathVariable Long id, @RequestBody ProductUpdateRequest request) {
+      @Login SessionAdmin sessionAdmin,
+      @PathVariable Long id,
+      @RequestBody ProductUpdateRequest request) {
     return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, request));
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable Long id) {
+  public void delete(@Login SessionAdmin sessionAdmin, @PathVariable Long id) {
     productService.delete(id);
   }
 }
