@@ -1,5 +1,7 @@
 package com.backoffice.customer.controller;
 
+import com.backoffice.admin.config.Login;
+import com.backoffice.admin.dto.SessionAdmin;
 import com.backoffice.customer.dto.*;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.customer.entity.CustomerStatus;
@@ -23,6 +25,7 @@ public class CustomerController {
   // 고객 전체 조회
   @GetMapping
   public ResponseEntity<Page<CustomerGetResponse>> getAll(
+      @Login SessionAdmin sessionAdmin,
       // CustomerGetRequest 정렬조건을 request에 담아서 불러옴
 //      @ModelAttribute CustomerGetRequest request,
       @RequestParam String keyword,
@@ -41,7 +44,9 @@ public class CustomerController {
   // 고객 정보 업데이트
   @PutMapping("/{id}")
   public ResponseEntity<CustomerUpdateResponse> update(
-      @PathVariable Long id, @RequestBody CustomerUpdateRequest request) {
+      @Login SessionAdmin sessionAdmin,
+      @PathVariable Long id,
+      @RequestBody CustomerUpdateRequest request) {
     return ResponseEntity.status(HttpStatus.OK).body(customerService.update(id, request));
   }
 
