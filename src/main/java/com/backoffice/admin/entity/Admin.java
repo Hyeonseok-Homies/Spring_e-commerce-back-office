@@ -1,6 +1,6 @@
 package com.backoffice.admin.entity;
 
-import com.backoffice.Error.BadRequestException;
+import com.backoffice.error.BadRequestException;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

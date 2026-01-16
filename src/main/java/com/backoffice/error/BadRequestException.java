@@ -1,4 +1,4 @@
-package com.backoffice.Error;
+package com.backoffice.error;
 
 public class BadRequestException extends RuntimeException {
   public BadRequestException(String message) {
