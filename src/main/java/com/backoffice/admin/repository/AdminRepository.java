@@ -51,4 +51,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
           requestDto.getStatus(),
   pageable
   );*/
+
+    Optional<Admin> findByName(String name);
 }
