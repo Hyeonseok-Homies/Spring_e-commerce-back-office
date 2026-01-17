@@ -13,6 +13,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,21 +25,29 @@ public class Review extends BaseEntity {//admin.entity.BaseEntity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private Long orderNumber;
+
     @Column(nullable = false)
     private Long productId;//고객이랑 상품 아이디를 활용한 정보를 가져와야하는지????????
+
     @Column(nullable = false)
     private Long customerId;
+
     @Column(nullable = false, length = 50)
     private String customerName;
+
     @Column(nullable = false, length = 50)
     private String productName;
+
     @Min(1) @Max(5)
     @Column(nullable = false, length = 50)
     private int grade;
+
     @Column(nullable = false, length = 500)
     private String reviewContent;
+
     @Column(nullable = false)
     private String customerEmail;
 
