@@ -69,13 +69,11 @@ public class OrderService {
         savedproduct.getCategory(),
         savedproduct.getName(),
         savedOrder.getQuantity(),
-        savedproduct.getPrice(),
         totalPrice,
-        savedproduct.getStock(),
         savedOrder.getStatus(),
         savedOrder.getCreatedAt(),
         savedOrder.getUpdatedAt(),
-        customer.getId(),
+        customer.getName(),
         admin.getName());
   }
 
@@ -87,7 +85,7 @@ public class OrderService {
             .orElseThrow(() -> new IllegalStateException("없는 주문입니다."));
     
     // 업데이트
-    order.changedStatus(request.getOrderStatus());
+    order.changedStatus(request.getStatus());
 
     return new OrderUpdateResponse(order.getId(), order.getOrderNo(), order.getStatus());
   }
@@ -102,7 +100,7 @@ public class OrderService {
     }
     
     // 주문 취소
-    order.CANCELED(order.getStatus());
+    order.cancel();
     Product product = order.getProduct();
     product.addStock(order.getQuantity());
     Order savedOrder = orderRepository.save(order);

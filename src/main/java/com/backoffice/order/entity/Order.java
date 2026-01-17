@@ -104,7 +104,7 @@ public class Order extends BaseEntity {
       this.status = newStatus;
   }
 
-  public void CANCELED(OrderStatus orderStatus) {
+  public void cancel() {
     if (this.status == OrderStatus.READY) {
       this.status = OrderStatus.CANCELED;
     }
