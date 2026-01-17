@@ -4,16 +4,15 @@ import com.backoffice.admin.entity.Admin;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.product.entity.Product;
 import jakarta.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
 
 @Getter
 @Entity
@@ -27,7 +26,10 @@ public class Order extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 30)
+  @Column(length = 30)
+  private String reason;
+
+  @Column(nullable = false)
   private String orderNo;
 
   @Column(nullable = false)
@@ -35,9 +37,6 @@ public class Order extends BaseEntity {
 
   @Column(nullable = false)
   private Long price;
-
-  @Column(nullable = false)
-  private Long totalPrice;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
@@ -56,40 +55,61 @@ public class Order extends BaseEntity {
   private Product product;
 
   public Order(
-      String orderNo,
-      Long quantity,
-      Long price,
-      Long totalPrice,
-      Admin admin,
-      Customer customer,
-      Product product) {
+      String orderNo, Long quantity, Long price, Admin admin, Customer customer, Product product) {
     this.orderNo = orderNo;
     this.quantity = quantity;
     this.price = price;
-    this.totalPrice = totalPrice;
     this.status = OrderStatus.READY;
     this.admin = admin;
     this.customer = customer;
     this.product = product;
   }
 
-    public static String generateOrderNumber() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String currentTime = dateFormat.format(new Date());
-        String randomNumber = generateRandomNumber(6); // 주문번호의 랜덤한 숫자 부분 길이 (여기서는 6자리로 설정)
+  public static String generateOrderNumber() {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    String currentTime = dateFormat.format(new Date());
+    String randomNumber = generateRandomNumber(6); // 주문번호의 랜덤한 숫자 부분 길이 (여기서는 6자리로 설정)
 
-        return currentTime + randomNumber;
+    return currentTime + randomNumber;
+  }
+
+  public static String generateRandomNumber(int length) {
+    StringBuilder sb = new StringBuilder();
+    Random random = new Random();
+
+    for (int i = 0; i < length; i++) {
+      int randomNumber = random.nextInt(10);
+      sb.append(randomNumber);
     }
 
-    public static String generateRandomNumber(int length) {
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
+    return sb.toString();
+  }
 
-        for (int i = 0; i < length; i++) {
-            int randomNumber = random.nextInt(8);
-            sb.append(randomNumber);
-        }
+  public void changedStatus(OrderStatus newStatus) {
+      if (this.status == null) {
+          throw new IllegalStateException("상태를 입력해주세요.");
+      }
+      else if (this.status == OrderStatus.READY && newStatus != OrderStatus.SHIPPING) {
+          throw new IllegalStateException("준비 상태에서는 배송중으로만 변경 가능합니다.");
+      }
+      else if (this.status == OrderStatus.SHIPPING && newStatus != OrderStatus.DELIVERED) {
+          throw new IllegalStateException("배송중 상태에서는 배송완료 로만 변경 가능합니다.");
+      }
+      else if (this.status == OrderStatus.DELIVERED) {
+          throw new IllegalStateException("이미 배송완료된 주문은 상태를 변경할 수 없습니다.");
+      }
+      else if(this.status == OrderStatus.CANCELED) {
+          throw new IllegalStateException("취소된 주문은 상태를 변경할 수 없습니다.");
+      }
+      this.status = newStatus;
+  }
 
-        return sb.toString();
+  public void CANCELED(OrderStatus orderStatus) {
+    if (this.status == OrderStatus.READY) {
+      this.status = OrderStatus.CANCELED;
     }
+    else {
+        throw new IllegalStateException("배송준비 상태에서만 취소가 가능합니다.");
+    }
+  }
 }

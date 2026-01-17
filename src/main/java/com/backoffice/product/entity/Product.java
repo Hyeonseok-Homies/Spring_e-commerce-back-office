@@ -2,6 +2,7 @@ package com.backoffice.product.entity;
 
 import com.backoffice.admin.entity.Admin;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -60,5 +61,27 @@ public class Product extends BaseEntity {
     } else {
       this.status = ProductStatus.ONSALE;
     }
+  }
+
+  public void removeStock(Long quantity) {
+    this.stock -= quantity;
+  }
+
+  private void updateStatus() {
+    if (this.stock == 0) {
+      this.status = ProductStatus.SOLDOUT;
+    } else if (this.stock <= 10) {
+      this.status = ProductStatus.DISCONTINUED;
+    } else {
+      this.status = ProductStatus.ONSALE;
+    }
+  }
+
+  public void addStock(Long quantity) {
+    if (quantity == null || quantity <= 0) {
+      throw new IllegalArgumentException("복구할 수량은 0보다 커야 합니다.");
+    }
+    this.stock += quantity;
+    updateStatus(); // 재고에 따라 상태 변경
   }
 }

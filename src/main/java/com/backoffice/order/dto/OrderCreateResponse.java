@@ -1,5 +1,6 @@
 package com.backoffice.order.dto;
 
+import com.backoffice.order.entity.OrderStatus;
 import com.backoffice.product.entity.ProductStatus;
 import lombok.Getter;
 
@@ -15,7 +16,7 @@ public class OrderCreateResponse {
   private final Long price;
   private final Long totalPrice;
   private final Long stock;
-  private final ProductStatus status;
+  private final OrderStatus status;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
   private final Long customerId;
@@ -30,7 +31,7 @@ public class OrderCreateResponse {
       Long price,
       Long totalPrice,
       Long stock,
-      ProductStatus status,
+      OrderStatus status,
       LocalDateTime createdAt,
       LocalDateTime updatedAt,
       Long customerId,

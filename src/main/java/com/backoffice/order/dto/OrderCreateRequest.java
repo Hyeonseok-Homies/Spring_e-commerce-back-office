@@ -1,6 +1,5 @@
 package com.backoffice.order.dto;
 
-import com.backoffice.order.entity.OrderStatus;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

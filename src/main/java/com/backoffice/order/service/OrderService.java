@@ -1,25 +1,21 @@
 package com.backoffice.order.service;
 
+import static com.backoffice.order.entity.Order.generateOrderNumber;
+
 import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.repository.AdminRepository;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.customer.repository.CustomerRepository;
-import com.backoffice.order.dto.OrderCreateRequest;
-import com.backoffice.order.dto.OrderCreateResponse;
-import com.backoffice.order.dto.OrderUpdateRequest;
-import com.backoffice.order.dto.OrderUpdateResponse;
+import com.backoffice.order.dto.*;
 import com.backoffice.order.entity.Order;
-import com.backoffice.order.entity.OrderStatus;
 import com.backoffice.order.repository.OrderRepository;
 import com.backoffice.product.entity.Product;
 import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.repository.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.backoffice.order.entity.Order.generateOrderNumber;
 
 @Service
 @RequiredArgsConstructor
@@ -55,23 +51,18 @@ public class OrderService {
     }
     // 가격 계산
     Long totalPrice = product.getPrice() * request.getQuantity();
+    
     // 재고 차감
-    // product.removeStock(request.getQuantity());
+    product.removeStock(request.getQuantity());
     Product savedproduct = productRepository.save(product);
 
     // 주문번호 생성
     String orderNumber = generateOrderNumber();
 
     Order order =
-        new Order(
-            orderNumber,
-            request.getQuantity(),
-            savedproduct.getPrice(),
-            totalPrice,
-            admin,
-            customer,
-            product);
+        new Order(orderNumber, request.getQuantity(), totalPrice, admin, customer, product);
     Order savedOrder = orderRepository.save(order);
+
     return new OrderCreateResponse(
         savedOrder.getId(),
         orderNumber,
@@ -81,7 +72,7 @@ public class OrderService {
         savedproduct.getPrice(),
         totalPrice,
         savedproduct.getStock(),
-        savedproduct.getStatus(),
+        savedOrder.getStatus(),
         savedOrder.getCreatedAt(),
         savedOrder.getUpdatedAt(),
         customer.getId(),
@@ -94,11 +85,32 @@ public class OrderService {
         orderRepository
             .findById(ordersId)
             .orElseThrow(() -> new IllegalStateException("없는 주문입니다."));
-    if (order.getStatus() == null) {
-      throw new IllegalStateException("상태를 입력해주세요.");
+    
+    // 업데이트
+    order.changedStatus(request.getOrderStatus());
+
+    return new OrderUpdateResponse(order.getId(), order.getOrderNo(), order.getStatus());
+  }
+
+  @Transactional
+  public OrderCancelResponse orderCancel(Long orderId, @Valid OrderCancelRequest request) {
+    Order order =
+        orderRepository.findById(orderId).orElseThrow(() -> new IllegalStateException("없는 주문입니다."));
+    
+    if (request.getReason() == null) {
+      throw new IllegalStateException("취소사유는 필수로 입력해주세요.");
     }
-
-
-    return null;
+    
+    // 주문 취소
+    order.CANCELED(order.getStatus());
+    Product product = order.getProduct();
+    product.addStock(order.getQuantity());
+    Order savedOrder = orderRepository.save(order);
+    
+    return new OrderCancelResponse(
+        savedOrder.getId(),
+        savedOrder.getOrderNo(),
+        savedOrder.getStatus(),
+        savedOrder.getReason());
   }
 }
