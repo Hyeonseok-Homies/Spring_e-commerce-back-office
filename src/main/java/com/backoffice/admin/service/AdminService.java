@@ -86,7 +86,8 @@ public class AdminService {
 
   // ----------------전민우----------------
   // 1. [관리자 리스트 조회] 검색, 페이징, 역할/상태 필터 적용
-  public AdminListResponseDto getAdminList(AdminListRequestDto requestDto) {
+  public AdminListResponseDto getAdminList(String kw, AdminRole role, AdminStatus status, Pageable pageable) {
+      /*
     // 검색 규칙 설정
     Pageable pageable =
         PageRequest.of( // 아래 내용들을 모두 챙겨 하나로 묶어 new Pageable 객체를 생성하는것????????
@@ -98,16 +99,15 @@ public class AdminService {
             // requestDto.getSortBy() 어떤 필드를 기준으로 정렬할지
             );
 
-    // 검색어와 역할/상태 필터를 적용한 조회
-    Page<Admin> adminPage =
-        adminRepository.searchAdmins( // searchAdmins 만든 검색 규칙
-            requestDto.getKeyword(), requestDto.getRole(), requestDto.getStatus(), pageable);
-
+       */
+    /*
     // 엔티티->DTO 변환
     List<AdminResponseDto> list =
         adminPage.getContent().stream() // .getContent() Admin 객체를 꺼내서 .stream()하나씩
             .map(AdminResponseDto::new) // 매핑해라 새로운 AdminResponseDto객체를 만들어서 Admin를 넣어라
             .collect(Collectors.toList()); // 변환된 AdminResponseDto객체를 한바구니에 담아라 ->List
+
+
 
     return new AdminListResponseDto(
         list,
@@ -115,7 +115,25 @@ public class AdminService {
         adminPage.getTotalPages(),
         adminPage.getTotalElements(),
         adminPage.getSize(),
-        adminPage.hasNext());
+        adminPage.hasNext());*/
+
+      // 1. Repository에서 Page 객체로 데이터를 가져온다
+      Page<Admin> adminPage = adminRepository.searchAdmins(kw, role, status, pageable);
+
+      // 2. Page 객체 안의 내용을 DTO 리스트로 변환 (빨간불 해결을 위해 생성자 확인 필수!)
+      List<AdminResponseDto> list = adminPage.getContent().stream()
+              .map(AdminResponseDto::new)
+              .collect(Collectors.toList());
+
+      // 3. 기존에 사용하던 AdminListResponseDto에 Page 객체가 가진 정보를 넣어준다
+      return new AdminListResponseDto(
+              list,
+              adminPage.getNumber() + 1,    // 현재 페이지 (0부터 시작하므로 +1)
+              adminPage.getTotalPages(),     // 전체 페이지 수
+              adminPage.getTotalElements(),  // 전체 데이터 갯수
+              adminPage.getSize(),           // 한 페이지당 요청 갯수
+              adminPage.hasNext()            // 다음 페이지 여부
+      );
   }
 
   // 2. [관리자 상세 조회]
