@@ -29,15 +29,15 @@ public class OrderController {
     return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(request, adminId));
   }
 
-  @PatchMapping("/{ordersId}/status")
+  @PatchMapping("/{orderId}/status") // ordersId -> orderId로 통일
   public ResponseEntity<OrderUpdateResponse> updateStatus(
       @Login SessionAdmin sessionAdmin,
-      @PathVariable Long ordersId,
+      @PathVariable Long orderId, // ordersId -> orderId로 통일
       @Valid @RequestBody OrderUpdateRequest request) {
     if (sessionAdmin == null) {
       throw new IllegalStateException("저장된 정보가 없습니다.");
     }
-    return ResponseEntity.status(HttpStatus.OK).body(orderService.update(ordersId, request));
+    return ResponseEntity.status(HttpStatus.OK).body(orderService.update(orderId, request)); // ordersId -> orderId로 통일
   }
 
   @GetMapping
