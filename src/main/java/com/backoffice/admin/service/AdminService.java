@@ -86,8 +86,9 @@ public class AdminService {
 
   // ----------------전민우----------------
   // 1. [관리자 리스트 조회] 검색, 페이징, 역할/상태 필터 적용
-  public AdminListResponseDto getAdminList(String kw, AdminRole role, AdminStatus status, Pageable pageable) {
-      /*
+  public AdminListResponseDto getAdminList(
+      String kw, AdminRole role, AdminStatus status, Pageable pageable) {
+    /*
     // 검색 규칙 설정
     Pageable pageable =
         PageRequest.of( // 아래 내용들을 모두 챙겨 하나로 묶어 new Pageable 객체를 생성하는것????????
@@ -117,23 +118,22 @@ public class AdminService {
         adminPage.getSize(),
         adminPage.hasNext());*/
 
-      // 1. Repository에서 Page 객체로 데이터를 가져온다
-      Page<Admin> adminPage = adminRepository.searchAdmins(kw, role, status, pageable);
+    // 1. Repository에서 Page 객체로 데이터를 가져온다
+    Page<Admin> adminPage = adminRepository.searchAdmins(kw, role, status, pageable);
 
-      // 2. Page 객체 안의 내용을 DTO 리스트로 변환 (빨간불 해결을 위해 생성자 확인 필수!)
-      List<AdminResponseDto> list = adminPage.getContent().stream()
-              .map(AdminResponseDto::new)
-              .collect(Collectors.toList());
+    // 2. Page 객체 안의 내용을 DTO 리스트로 변환 (빨간불 해결을 위해 생성자 확인 필수!)
+    List<AdminResponseDto> list =
+        adminPage.getContent().stream().map(AdminResponseDto::new).collect(Collectors.toList());
 
-      // 3. 기존에 사용하던 AdminListResponseDto에 Page 객체가 가진 정보를 넣어준다
-      return new AdminListResponseDto(
-              list,
-              adminPage.getNumber() + 1,    // 현재 페이지 (0부터 시작하므로 +1)
-              adminPage.getTotalPages(),     // 전체 페이지 수
-              adminPage.getTotalElements(),  // 전체 데이터 갯수
-              adminPage.getSize(),           // 한 페이지당 요청 갯수
-              adminPage.hasNext()            // 다음 페이지 여부
-      );
+    // 3. 기존에 사용하던 AdminListResponseDto에 Page 객체가 가진 정보를 넣어준다
+    return new AdminListResponseDto(
+        list,
+        adminPage.getNumber() + 1, // 현재 페이지 (0부터 시작하므로 +1)
+        adminPage.getTotalPages(), // 전체 페이지 수
+        adminPage.getTotalElements(), // 전체 데이터 갯수
+        adminPage.getSize(), // 한 페이지당 요청 갯수
+        adminPage.hasNext() // 다음 페이지 여부
+        );
   }
 
   // 2. [관리자 상세 조회]

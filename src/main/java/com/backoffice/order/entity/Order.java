@@ -43,7 +43,7 @@ public class Order extends BaseEntity {
   private OrderStatus status;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "Created_By_Admin_Id", nullable = false)
+  @JoinColumn(name = "Created_By_Admin_Id") // nullable 옵션 제거
   private Admin admin;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -86,22 +86,18 @@ public class Order extends BaseEntity {
   }
 
   public void changedStatus(OrderStatus newStatus) {
-      if (this.status == null) {
-          throw new IllegalStateException("상태를 입력해주세요.");
-      }
-      else if (this.status == OrderStatus.READY && newStatus != OrderStatus.SHIPPING) {
-          throw new IllegalStateException("준비 상태에서는 배송중으로만 변경 가능합니다.");
-      }
-      else if (this.status == OrderStatus.SHIPPING && newStatus != OrderStatus.DELIVERED) {
-          throw new IllegalStateException("배송중 상태에서는 배송완료 로만 변경 가능합니다.");
-      }
-      else if (this.status == OrderStatus.DELIVERED) {
-          throw new IllegalStateException("이미 배송완료된 주문은 상태를 변경할 수 없습니다.");
-      }
-      else if(this.status == OrderStatus.CANCELED) {
-          throw new IllegalStateException("취소된 주문은 상태를 변경할 수 없습니다.");
-      }
-      this.status = newStatus;
+    if (this.status == null) {
+      throw new IllegalStateException("상태를 입력해주세요.");
+    } else if (this.status == OrderStatus.READY && newStatus != OrderStatus.SHIPPING) {
+      throw new IllegalStateException("준비 상태에서는 배송중으로만 변경 가능합니다.");
+    } else if (this.status == OrderStatus.SHIPPING && newStatus != OrderStatus.DELIVERED) {
+      throw new IllegalStateException("배송중 상태에서는 배송완료 로만 변경 가능합니다.");
+    } else if (this.status == OrderStatus.DELIVERED) {
+      throw new IllegalStateException("이미 배송완료된 주문은 상태를 변경할 수 없습니다.");
+    } else if (this.status == OrderStatus.CANCELED) {
+      throw new IllegalStateException("취소된 주문은 상태를 변경할 수 없습니다.");
+    }
+    this.status = newStatus;
   }
 
   public void cancel(String reason) {

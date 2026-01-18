@@ -2,18 +2,26 @@ package com.backoffice.order.service;
 
 import static com.backoffice.order.entity.Order.generateOrderNumber;
 
+import com.backoffice.order.dto.OrderDetailResponse;
+import com.backoffice.order.dto.OrderGetResponse;
+import com.backoffice.order.dto.OrderListResponse;
 import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.repository.AdminRepository;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.customer.repository.CustomerRepository;
 import com.backoffice.order.dto.*;
 import com.backoffice.order.entity.Order;
+import com.backoffice.order.entity.OrderStatus;
 import com.backoffice.order.repository.OrderRepository;
 import com.backoffice.product.entity.Product;
 import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.repository.ProductRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +59,7 @@ public class OrderService {
     }
     // 가격 계산
     Long totalPrice = product.getPrice() * request.getQuantity();
-    
+
     // 재고 차감
     product.removeStock(request.getQuantity());
     Product savedproduct = productRepository.save(product);
@@ -71,10 +79,50 @@ public class OrderService {
         savedOrder.getQuantity(),
         totalPrice,
         savedOrder.getStatus(),
-        savedOrder.getCreatedAt(),
+        savedOrder.getOrderedAt(),
         savedOrder.getUpdatedAt(),
         customer.getName(),
         admin.getName());
+  }
+
+  @Transactional(readOnly = true)
+  public OrderListResponse<OrderGetResponse> getAll(
+      String keyword,
+      OrderStatus status,
+      Integer page,
+      Integer size,
+      String sortBy, // quantity / totalPrice / orderedAt
+      String sortOrder // asc / desc
+      ) {
+    int pageIndex = Math.max((page == null ? 1 : page) - 1, 0);
+    int pageSize = (size == null || size < 1) ? 10 : size;
+
+    Sort.Direction direction =
+        "asc".equalsIgnoreCase(sortOrder) ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+    // 요구사항 정렬 기준: 수량, 금액, 주문일
+    String sortField =
+        switch (sortBy) {
+          case "quantity" -> "quantity";
+          case "totalPrice" -> "totalPrice";
+          default -> "orderedAt"; // 주문일(= BaseEntity의 @CreatedDate)
+        };
+
+    Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(direction, sortField));
+
+    Page<OrderGetResponse> result =
+        orderRepository.search(keyword, status, pageable).map(OrderGetResponse::new);
+
+    return new OrderListResponse<>(result);
+  }
+
+  public OrderDetailResponse getOne(Long id) {
+    Order order =
+        orderRepository
+            .findDetailById(id)
+            .orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다. id=" + id));
+
+    return new OrderDetailResponse(order);
   }
 
   @Transactional
@@ -83,7 +131,7 @@ public class OrderService {
         orderRepository
             .findById(ordersId)
             .orElseThrow(() -> new IllegalStateException("없는 주문입니다."));
-    
+
     // 업데이트
     order.changedStatus(request.getStatus());
 
@@ -94,18 +142,18 @@ public class OrderService {
   public OrderCancelResponse orderCancel(Long orderId, @Valid OrderCancelRequest request) {
     Order order =
         orderRepository.findById(orderId).orElseThrow(() -> new IllegalStateException("없는 주문입니다."));
-    
+
     if (request.getReason() == null) {
       throw new IllegalStateException("취소사유는 필수로 입력해주세요.");
     }
-    
+
     // 주문 취소
     order.cancel(request.getReason());
     Product product = order.getProduct();
     product.addStock(order.getQuantity());
 
     Order savedOrder = orderRepository.save(order);
-    
+
     return new OrderCancelResponse(
         savedOrder.getId(),
         savedOrder.getOrderNo(),

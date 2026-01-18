@@ -5,15 +5,15 @@ import lombok.Getter;
 
 @Getter
 public class OrderCancelResponse {
-    private final Long id;
-    private final String orderNo;
-    private final OrderStatus status;
-    private final String reason;
+  private final Long id;
+  private final String orderNo;
+  private final OrderStatus status;
+  private final String reason;
 
-    public OrderCancelResponse(Long id, String orderNo, OrderStatus status, String reason) {
-        this.id = id;
-        this.orderNo = orderNo;
-        this.status = status;
-        this.reason = reason;
-    }
+  public OrderCancelResponse(Long id, String orderNo, OrderStatus status, String reason) {
+    this.id = id;
+    this.orderNo = orderNo;
+    this.status = status;
+    this.reason = reason;
+  }
 }

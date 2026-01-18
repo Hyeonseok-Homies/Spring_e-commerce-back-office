@@ -91,7 +91,8 @@ public class AdminController {
       @RequestParam(required = false) String kw,
       @RequestParam(required = false) AdminRole role,
       @RequestParam(required = false) AdminStatus status,
-      @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+          Pageable pageable) {
     return ResponseEntity.ok(adminService.getAdminList(kw, role, status, pageable));
   }
 
