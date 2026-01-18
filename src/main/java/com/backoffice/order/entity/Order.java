@@ -34,7 +34,7 @@ public class Order extends BaseEntity {
   private OrderStatus status;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "admin_id", nullable = false)
+  @JoinColumn(name = "admin_id") // nullable 옵션 제거
   private Admin admin;
 
   @ManyToOne(fetch = FetchType.LAZY)
