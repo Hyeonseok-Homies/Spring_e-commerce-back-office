@@ -1,6 +1,7 @@
 package com.backoffice.order.entity;
 
 import com.backoffice.admin.entity.Admin;
+import com.backoffice.common.BaseEntity;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.product.entity.Product;
 import jakarta.persistence.*;
