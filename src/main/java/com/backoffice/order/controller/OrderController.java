@@ -7,10 +7,6 @@ import com.backoffice.order.entity.OrderStatus;
 import com.backoffice.order.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+  private final OrderService orderService;
 
   @PostMapping
   public ResponseEntity<OrderCreateResponse> create( // 오타 수정
@@ -38,46 +32,40 @@ public class OrderController {
   @PatchMapping("/{ordersId}/status")
   public ResponseEntity<OrderUpdateResponse> updateStatus(
       @Login SessionAdmin sessionAdmin,
-      @PathVariable  Long ordersId,
+      @PathVariable Long ordersId,
       @Valid @RequestBody OrderUpdateRequest request) {
-      if(sessionAdmin == null)
-      {
-          throw new IllegalStateException("저장된 정보가 없습니다.");
-      }
-      return ResponseEntity.status(HttpStatus.OK).body(orderService.update(ordersId, request));
+    if (sessionAdmin == null) {
+      throw new IllegalStateException("저장된 정보가 없습니다.");
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(orderService.update(ordersId, request));
   }
-    @GetMapping
-    public ResponseEntity<OrderListResponse<OrderGetResponse>> getAll(
-            @Login SessionAdmin sessionAdmin,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) OrderStatus status,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(defaultValue = "orderedAt") String sortBy,
-            @RequestParam(defaultValue = "desc") String sortOrder
-    ) {
-        return ResponseEntity.ok(
-                orderService.getAll(keyword, status, page, size, sortBy, sortOrder)
-        );
-    }
 
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDetailResponse> getOne(
-            @Login SessionAdmin sessionAdmin,
-            @PathVariable Long orderId
-    ) {
-        return ResponseEntity.ok(orderService.getOne(orderId));
-    }
+  @GetMapping
+  public ResponseEntity<OrderListResponse<OrderGetResponse>> getAll(
+      @Login SessionAdmin sessionAdmin,
+      @RequestParam(required = false) String keyword,
+      @RequestParam(required = false) OrderStatus status,
+      @RequestParam(defaultValue = "1") Integer page,
+      @RequestParam(defaultValue = "10") Integer size,
+      @RequestParam(defaultValue = "orderedAt") String sortBy,
+      @RequestParam(defaultValue = "desc") String sortOrder) {
+    return ResponseEntity.ok(orderService.getAll(keyword, status, page, size, sortBy, sortOrder));
+  }
 
-    @PostMapping("/{orderId}/cancel")
-    public ResponseEntity<OrderCancelResponse> cancel(
-            @Login SessionAdmin sessionAdmin,
-            @PathVariable Long orderId,
-            @Valid @RequestBody OrderCancelRequest request) {
-        if(sessionAdmin == null)
-        {
-            throw new IllegalStateException("저장된 정보가 없습니다.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.orderCancel(orderId, request));
+  @GetMapping("/{orderId}")
+  public ResponseEntity<OrderDetailResponse> getOne(
+      @Login SessionAdmin sessionAdmin, @PathVariable Long orderId) {
+    return ResponseEntity.ok(orderService.getOne(orderId));
+  }
+
+  @PostMapping("/{orderId}/cancel")
+  public ResponseEntity<OrderCancelResponse> cancel(
+      @Login SessionAdmin sessionAdmin,
+      @PathVariable Long orderId,
+      @Valid @RequestBody OrderCancelRequest request) {
+    if (sessionAdmin == null) {
+      throw new IllegalStateException("저장된 정보가 없습니다.");
     }
+    return ResponseEntity.status(HttpStatus.OK).body(orderService.orderCancel(orderId, request));
+  }
 }

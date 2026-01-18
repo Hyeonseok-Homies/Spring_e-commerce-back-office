@@ -1,7 +1,6 @@
 package com.backoffice.order.dto;
 
 import com.backoffice.order.entity.OrderStatus;
-import com.backoffice.product.entity.ProductStatus;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
