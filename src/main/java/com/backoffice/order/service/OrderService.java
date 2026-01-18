@@ -148,9 +148,10 @@ public class OrderService {
     }
 
     // 주문 취소
-    order.cancel();
+    order.cancel(request.getReason());
     Product product = order.getProduct();
     product.addStock(order.getQuantity());
+
     Order savedOrder = orderRepository.save(order);
 
     return new OrderCancelResponse(
