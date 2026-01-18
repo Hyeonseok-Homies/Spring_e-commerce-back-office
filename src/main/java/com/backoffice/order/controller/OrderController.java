@@ -37,7 +37,8 @@ public class OrderController {
     if (sessionAdmin == null) {
       throw new IllegalStateException("저장된 정보가 없습니다.");
     }
-    return ResponseEntity.status(HttpStatus.OK).body(orderService.update(orderId, request)); // ordersId -> orderId로 통일
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(orderService.update(orderId, request)); // ordersId -> orderId로 통일
   }
 
   @GetMapping
