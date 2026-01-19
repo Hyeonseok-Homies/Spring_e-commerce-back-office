@@ -47,7 +47,9 @@ public class CustomerService {
                                 customer.getName(),
                                 customer.getEmail(),
                                 customer.getStatus(),
-                                customer.getCreatedAt()));
+                                customer.getCreatedAt(),
+                                customer.getTotalOrders(),
+                                customer.getTotalPurchaseAmount()));
     }
 
     // 고객 상세 (단건) 조회
@@ -63,7 +65,9 @@ public class CustomerService {
                 customer.getName(),
                 customer.getEmail(),
                 customer.getStatus(),
-                customer.getCreatedAt());
+                customer.getCreatedAt(),
+                customer.getTotalOrders(),
+                customer.getTotalPurchaseAmount());
     }
 
     // 고객 정보 수정
