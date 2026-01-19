@@ -133,12 +133,12 @@ public class AdminService {
 
   // 3. [관리자 승인] 승인대기 상태 확인 후 활성화 및 승인일시 업데이트
   @Transactional
-  public AdminApprovalResponseDto approveAdmin(Long adminId, AdminRole role) {
+  public AdminApprovalResponseDto approveAdmin(Long adminId, AdminStatus status) {
     Admin admin =
         adminRepository
             .findById(adminId)
             .orElseThrow(() -> new IllegalArgumentException("해당 관리자가 없습니다."));
-    admin.approve(role); // 엔티티 내부에서 상태변경 및 승인일시 처리
+    admin.approve(status); // 엔티티 내부에서 상태변경 및 승인일시 처리
     return new AdminApprovalResponseDto(admin);
   }
 
@@ -205,6 +205,7 @@ public class AdminService {
     return updateAdmin(currentAdminId, requestDto);
   }
 
+  //비밀번호 변경된거 인코딩해서 넣기
   // 11. [비밀번호 변경] 새로운 비밀번호로 업데이트
   @Transactional
   public void changePassword(Long adminId, String newPassword) {
@@ -212,7 +213,8 @@ public class AdminService {
         adminRepository
             .findById(adminId)
             .orElseThrow(() -> new IllegalArgumentException("해당 관리자가 없습니다."));
-    admin.changePassword(newPassword); // 엔티티에 해당 메서드 구현 필요
+      String encodedPassword2 = passwordEncoder.encode(newPassword);
+    admin.changePassword(encodedPassword2); // 엔티티에 해당 메서드 구현 필요
   }
   // --------------전민우--------
 }

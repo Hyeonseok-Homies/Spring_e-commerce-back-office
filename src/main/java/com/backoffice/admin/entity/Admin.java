@@ -47,7 +47,7 @@ public class Admin extends BaseEntity {
   private LocalDateTime rejectedAt;
 
   @Column(length = 100)
-  private String rejectionReason;
+  private String reason;
 
   // 회원가입
   public Admin(String name, String email, String password, String phoneNumber, AdminRole role) {
@@ -66,14 +66,13 @@ public class Admin extends BaseEntity {
     this.phoneNumber = phoneNumber;
   }
 
-  // 관리자 역할 변경
-  public void approve(AdminRole role) {
+  // 관리자 승인
+  public void approve(AdminStatus status) {
     if (this.status != AdminStatus.PENDING) {
       throw new IllegalStateException("승인 대기 상태인 관리자만 승인할수 있습니다.");
     }
     this.status = AdminStatus.ACTIVE;
     this.approvedAt = LocalDateTime.now();
-    this.role = role;
   }
 
   // 거부 처리
@@ -86,7 +85,7 @@ public class Admin extends BaseEntity {
     }
     this.status = AdminStatus.REJECTED; // 거부 상태로 변경
     this.rejectedAt = LocalDateTime.now(); // 수정시간
-    this.rejectionReason = reason; // 사유 저장
+    this.reason = reason; // 사유 저장
   }
 
   // 관리자 역할 변경

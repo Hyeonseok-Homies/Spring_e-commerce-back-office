@@ -15,6 +15,7 @@ public class AdminRejectResponseDto {
   private final String status;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
+  private final String reason;
 
   public AdminRejectResponseDto(Admin admin) {
     this.id = admin.getId();
@@ -25,5 +26,6 @@ public class AdminRejectResponseDto {
     this.status = admin.getStatus().name();
     this.createdAt = admin.getCreatedAt();
     this.updatedAt = admin.getApprovedAt();
+    this.reason = admin.getReason();
   }
 }
