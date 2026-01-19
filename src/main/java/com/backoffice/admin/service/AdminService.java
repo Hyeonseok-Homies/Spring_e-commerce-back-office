@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import java.util.List;
@@ -65,13 +66,13 @@ public class AdminService {
   }
 
   @Transactional(readOnly = true)
-  public AdminLoginResponse login(@Valid AdminLoginRequest request) {
+  public AdminLoginResponse login(AdminLoginRequest request) {
     Admin admin =
         adminRepository
             .findByEmail(request.getEmail())
-            .orElseThrow(() -> new IllegalStateException("존재하지 않는 이메일입니다."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 이메일입니다."));
     if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
-      throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+      throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
     }
     switch (admin.getStatus()) {
       case INACTIVE -> throw new IllegalStateException("계정이 비활성 상태입니다.");

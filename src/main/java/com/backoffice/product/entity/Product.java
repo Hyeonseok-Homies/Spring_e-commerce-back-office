@@ -1,6 +1,7 @@
 package com.backoffice.product.entity;
 
 import com.backoffice.admin.entity.Admin;
+import com.backoffice.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
