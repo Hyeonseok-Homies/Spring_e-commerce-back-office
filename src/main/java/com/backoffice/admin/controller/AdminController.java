@@ -116,7 +116,7 @@ public class AdminController {
       @Login SessionAdmin sessionAdmin,
       @PathVariable Long id,
       @Valid @RequestBody AdminApprovalRequestDto requestDto) {
-    return ResponseEntity.ok(adminService.approveAdmin(id, requestDto.getRole()));
+    return ResponseEntity.ok(adminService.approveAdmin(id, requestDto.getStatus()));
   }
 
   // 5. 가입 거절
