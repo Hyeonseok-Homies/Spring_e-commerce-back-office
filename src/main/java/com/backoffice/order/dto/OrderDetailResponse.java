@@ -15,7 +15,7 @@ public class OrderDetailResponse {
   private final String productName;
   private final Long quantity;
   private final Long price;
-  private final LocalDateTime orderedAt;
+  private final LocalDateTime createdAt;
   private final OrderStatus status;
   private final String adminName; // 관리자 주문이 아니면 null
   private final String adminEmail; // 관리자 주문이 아니면 null
@@ -28,7 +28,7 @@ public class OrderDetailResponse {
     this.productName = order.getProduct().getName();
     this.quantity = order.getQuantity();
     this.price = order.getPrice();
-    this.orderedAt = order.getCreatedAt();
+    this.createdAt = order.getCreatedAt();
     this.status = order.getStatus();
 
     if (order.getAdmin() == null) {
