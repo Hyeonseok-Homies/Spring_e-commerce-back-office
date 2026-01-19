@@ -1,4 +1,4 @@
-package com.backoffice.order.entity;
+package com.backoffice.common;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

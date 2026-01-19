@@ -1,6 +1,7 @@
 package com.backoffice.customer.entity;
 
 import jakarta.persistence.*;
+import com.backoffice.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,18 +3,30 @@ package com.backoffice.admin.dto;
 import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.entity.AdminRole;
 import com.backoffice.admin.entity.AdminStatus;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 // 필요없어짐
 @Getter
 public class AdminListRequestDto {
   // 아래 셋팅된 기본값은, 요청시 별도의 값이 없다면 기본값으로 활용
-  private String keyword; // 검색 키워드 이름,이메일
+  private String keyword;
+
+  @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
   private int page = 1;
+
+  @Min(value = 1, message = "페이지 크기는 1 이상이어야 합니다.")
+  @Max(value = 100, message = "페이지 크기는 최대 100까지 가능합니다.")
   private int pageSize = 10;
-  private String sortBy = "createdAt"; // 정렬기준 createdAt,name,email
-  private String direction = "desc"; // 정렬 순서 asc, desc
-  // 로그인시 세션정보에서 역할과 상태값을 가져오는걸로
-  private AdminRole role; // 역할 필터 슈퍼 관리자, 운영 관리자, CS 관리자
-  private AdminStatus status; // 상태 필터 활성, 비활성, 정지, 승인대기, 거부
+
+  @NotBlank(message = "정렬 기준은 필수입니다.")
+  private String sortBy = "createdAt";
+
+  @NotBlank(message = "정렬 방향은 필수입니다.")
+  private String direction = "desc";
+
+  private AdminRole role;
+  private AdminStatus status;
 }

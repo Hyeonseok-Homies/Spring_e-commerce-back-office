@@ -1,14 +1,15 @@
 package com.backoffice.admin.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class AdminLoginRequest {
-  @Email(message = "잘못된 이메일 형식입니다.")
-  private String email;
+  @NotBlank @Email private String email;
 
+  @NotBlank
   @Size(min = 8, max = 255)
   private String password;
 }

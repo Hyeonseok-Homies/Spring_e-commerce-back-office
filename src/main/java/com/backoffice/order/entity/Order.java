@@ -1,6 +1,7 @@
 package com.backoffice.order.entity;
 
 import com.backoffice.admin.entity.Admin;
+import com.backoffice.common.BaseEntity;
 import com.backoffice.customer.entity.Customer;
 import com.backoffice.product.entity.Product;
 import jakarta.persistence.*;
@@ -51,7 +52,7 @@ public class Order extends BaseEntity {
   private Customer customer;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "Created_By_Product_id", nullable = false)
+  @JoinColumn(name = "Created_By_Product_Id", nullable = false)
   private Product product;
 
   public Order(
