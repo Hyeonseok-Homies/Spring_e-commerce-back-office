@@ -5,6 +5,7 @@ import com.backoffice.admin.dto.SessionAdmin;
 import com.backoffice.customer.dto.*;
 import com.backoffice.customer.entity.CustomerStatus;
 import com.backoffice.customer.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -42,6 +42,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
       @Param("role") AdminRole role,
       @Param("status") AdminStatus status,
       Pageable pageable); // Pageable ->page:현재 몇번째 페이지 인지 size: 한페이지에 몇개씩 보여줄건지 sort: 정렬 기준
+
   // "몇 번째 페이지를 볼 건지", "한 페이지에 몇 명씩 보여줄 건지", "이름순으로 정렬할 건지" 같은 조회 옵션을 담고 있는 아주 중요한 객체
   // 1차 캐시에서 하는게 아니라 DB에서 직접 조회 한다
   // 리턴은 아래와 같이 리턴한다.
@@ -51,4 +52,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
           requestDto.getStatus(),
   pageable
   );*/
+
+  Optional<Admin> findByName(String name);
 }

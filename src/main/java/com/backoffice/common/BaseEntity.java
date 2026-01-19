@@ -1,6 +1,8 @@
-package com.backoffice.admin.entity;
+package com.backoffice.common;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +11,6 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
@@ -23,9 +23,9 @@ public abstract class BaseEntity {
   @CreatedDate
   @Column(updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
-  private LocalDateTime createdAt;
+  private LocalDateTime orderedAt;
 
   @LastModifiedDate
   @Temporal(TemporalType.TIMESTAMP)
-  private LocalDateTime modifiedAt;
+  private LocalDateTime updatedAt;
 }

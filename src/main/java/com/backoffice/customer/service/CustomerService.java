@@ -52,13 +52,13 @@ public class CustomerService {
                                 customer.getTotalPurchaseAmount()));
     }
 
-    // 고객 상세 (단건) 조회
-    @Transactional(readOnly = true)
-    public CustomerGetResponse findById(Long id) {
-        Customer customer =
-                customerRepository
-                        .findById(id)
-                        .orElseThrow(() -> new IllegalStateException("해당 고객이 없습니다."));
+  // 고객 상세 (단건) 조회
+  @Transactional(readOnly = true)
+  public CustomerGetResponse findById(Long id) {
+    Customer customer =
+        customerRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
 
         return new CustomerGetResponse(
                 customer.getId(),
@@ -70,13 +70,13 @@ public class CustomerService {
                 customer.getTotalPurchaseAmount());
     }
 
-    // 고객 정보 수정
-    @Transactional
-    public CustomerUpdateResponse update(Long id, CustomerUpdateRequest request) {
-        Customer customer =
-                customerRepository
-                        .findById(id)
-                        .orElseThrow(() -> new IllegalStateException("해당 고객이 없습니다."));
+  // 고객 정보 수정
+  @Transactional
+  public CustomerUpdateResponse update(Long id, CustomerUpdateRequest request) {
+    Customer customer =
+        customerRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
 
         customer.update(request.getName(), request.getEmail(), request.getPhoneNumber());
 
@@ -84,15 +84,15 @@ public class CustomerService {
                 customer.getId(), customer.getName(), customer.getEmail(), customer.getPhoneNumber());
     }
 
-    // 고객 삭제
-    @Transactional
-    public void delete(Long id) {
-        Customer customer =
-                customerRepository
-                        .findById(id)
-                        .orElseThrow(() -> new IllegalStateException("해당 고객이 없습니다."));
-        customerRepository.delete(customer);
-    }
+  // 고객 삭제
+  @Transactional
+  public void delete(Long id, CustomerDeleteRequest request) {
+    Customer customer =
+        customerRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
+    customerRepository.delete(customer);
+  }
 
     // 상태 변경
     @Transactional
