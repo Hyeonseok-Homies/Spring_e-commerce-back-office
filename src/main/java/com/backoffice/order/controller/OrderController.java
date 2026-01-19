@@ -48,7 +48,7 @@ public class OrderController {
       @RequestParam(required = false) OrderStatus status,
       @RequestParam(defaultValue = "1") Integer page,
       @RequestParam(defaultValue = "10") Integer size,
-      @RequestParam(defaultValue = "cratedAt") String sortBy,
+      @RequestParam(defaultValue = "createdAt") String sortBy,
       @RequestParam(defaultValue = "desc") String sortOrder) {
     return ResponseEntity.ok(orderService.getAll(keyword, status, page, size, sortBy, sortOrder));
   }
