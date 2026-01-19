@@ -45,6 +45,7 @@ public class Admin extends BaseEntity {
 
   private LocalDateTime approvedAt;
   private LocalDateTime rejectedAt;
+
   @Column(length = 100)
   private String rejectionReason;
 

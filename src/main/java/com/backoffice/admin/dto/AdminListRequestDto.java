@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
-//필요없어짐
+// 필요없어짐
 @Getter
 public class AdminListRequestDto {
   // 아래 셋팅된 기본값은, 요청시 별도의 값이 없다면 기본값으로 활용

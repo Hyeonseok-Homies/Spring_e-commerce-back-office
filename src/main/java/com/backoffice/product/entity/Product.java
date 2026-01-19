@@ -17,7 +17,6 @@ public class Product extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @NotNull
   private Long id;
 
   @NotBlank
@@ -61,5 +60,32 @@ public class Product extends BaseEntity {
     } else {
       this.status = ProductStatus.ONSALE;
     }
+  }
+
+  public void removeStock(Long quantity) {
+    if (this.stock < quantity) {
+      throw new IllegalStateException("재고가 부족합니다. (요청: " + quantity + ", 현재: " + this.stock + ")");
+    }
+    this.stock -= quantity;
+    updateStatus(); // 재고에 따라 상태 변경
+  }
+
+  private void updateStatus() {
+    if (this.status == ProductStatus.DISCONTINUED) {
+      return;
+    }
+    if (this.stock == 0) {
+      this.status = ProductStatus.SOLDOUT;
+    } else {
+      this.status = ProductStatus.ONSALE;
+    }
+  }
+
+  public void addStock(Long quantity) {
+    if (quantity == null || quantity <= 0) {
+      throw new IllegalArgumentException("복구할 수량은 0보다 커야 합니다.");
+    }
+    this.stock += quantity;
+    updateStatus();
   }
 }

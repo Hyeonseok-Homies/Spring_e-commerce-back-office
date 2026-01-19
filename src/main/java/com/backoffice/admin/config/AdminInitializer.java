@@ -15,27 +15,28 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AdminInitializer implements CommandLineRunner {
 
-    private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
+  private final AdminRepository adminRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    @Override
-    @Transactional
-    public void run(String... args) {
-        // 이미 계정이 있으면 더 안 만들게 방어 로직 (멱등성)
-        if (!adminRepository.existsByEmail("admin@example.com")) {
+  @Override
+  @Transactional
+  public void run(String... args) {
+    // 이미 계정이 있으면 더 안 만들게 방어 로직 (멱등성)
+    if (!adminRepository.existsByEmail("admin@example.com")) {
 
-            Admin admin = Admin.builder()
-                    .name("Admin")
-                    .email("admin@example.com")
-                    .password(passwordEncoder.encode("12345678"))
-                    .phoneNumber("010-1234-5678")
-                    .role(AdminRole.SUPER)
-                    .status(AdminStatus.ACTIVE)
-                    .createdAt(LocalDateTime.now())
-                    .build();
+      Admin admin =
+          Admin.builder()
+              .name("Admin")
+              .email("admin@example.com")
+              .password(passwordEncoder.encode("12345678"))
+              .phoneNumber("010-1234-5678")
+              .role(AdminRole.SUPER)
+              .status(AdminStatus.ACTIVE)
+              .createdAt(LocalDateTime.now())
+              .build();
 
-            adminRepository.save(admin);
-            System.out.println("=== 슈퍼관리자 계정 생성 완료 (admin@example.com / 12345678) ===");
-        }
+      adminRepository.save(admin);
+      System.out.println("=== 슈퍼관리자 계정 생성 완료 (admin@example.com / 12345678) ===");
     }
+  }
 }
