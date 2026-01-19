@@ -1,10 +1,14 @@
 package com.backoffice.customer.entity;
 
+import com.backoffice.order.entity.Order;
 import jakarta.persistence.*;
 import com.backoffice.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -31,6 +35,21 @@ public class Customer extends BaseEntity {
   @Column(nullable = false, length = 30)
   @Enumerated(EnumType.STRING)
   private CustomerStatus status;
+
+  @OneToMany (mappedBy = "customer")
+  private List<Order> orders = new ArrayList<>();
+
+  // 총 주문 수 계산 메서드 (개수)
+  public long getTotalOrders() {
+      return orders.size();
+  }
+
+  // 총 구매 금액 (합계)
+  public long getTotalPurchaseAmount () {
+      return orders.stream()
+              .mapToLong(Order::getTotalPrice)
+              .sum();
+  }
 
   // 생성자
   public Customer(String name, String email, String phoneNumber, CustomerStatus status) {
