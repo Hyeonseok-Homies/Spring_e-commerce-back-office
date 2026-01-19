@@ -105,7 +105,7 @@ public class OrderService {
         switch (sortBy) {
           case "quantity" -> "quantity";
           case "totalPrice" -> "totalPrice";
-          default -> "orderedAt"; // 주문일(= BaseEntity의 @CreatedDate)
+          default -> "createdAt"; // 주문일(= BaseEntity의 @CreatedDate)
         };
 
     Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(direction, sortField));
