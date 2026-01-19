@@ -3,11 +3,22 @@
 ---
 ## ■ 프로젝트 소개
 #### 🔹 기간 : 26.01.14 ~ 26.01.20
+#### 🔹 개요 : 
+고객 정보, 고객의 상품, 주문 관리의 효율화를 통해 이커머스 운영자의 업무시간 단축과 데이터 기반 통계를 통해 마케팅 및 재고 관리에도 도움을 줄 수 있다. 
 #### 🔹 목적 : 
+
 - 이커머스 서비스의 핵심을 관리하는 백오피스(관리자 페이지) 를 사용하여 데이터를 다룰 수 있다.
 - 데이터가 많아질 때를 대비한 검색, 정렬, 페이징 기능까지 구축할 수 있다.
 - 관리자가 고객, 상품, 주문 데이터를 쉽고 빠르고 정확하게 관리할 수 있는 기본 시스템을 구축하는 것이다.
   ##### ※ 이커머스 서비스의 핵심이란?  고객, 상품, 주문 데이터를 효율적으로 관리
+
+#### 🔹 주요 기능 :
+- 고객/상품/주문 관리: 통합된 관리 기능 제공
+- 상품 리뷰 관리: 리뷰 조회 및 상품별 평점·통계 제공
+- 관리자 회원가입 승인 프로세스: 슈퍼 관리자의 승인/거부 기능
+- 역할 기반 액세스 제어: 관리자 권한별 접근 제어
+- 데이터 처리 기능: 검색, 정렬, 필터, 페이징 지원
+
 #### 🔹 팀 소개 : 현석이와 아이들
 - 이현석 : Leader, Admin & Oder manager
 - 유지현 : Admin & Oder manager
@@ -83,7 +94,7 @@
 <details id="1-signup">
 <summary><b>🔹 ERD </b></summary>
 <br>
-
+<img width="939" height="859" alt="image (1)" src="https://github.com/user-attachments/assets/ae34b2cb-6c45-4d0c-9ffc-0f0ffe1eb4a3" />
 
 </details>
 
@@ -166,6 +177,18 @@ create table orders
 
 ```
 create table review
+(
+    Id                     bigint      not null
+    Grade                  int         not null
+    By_Order_No            bigint      not null,
+    Created_at             datetime(6) not null,
+    Created_By_Customer_Id bigint      not null,
+    Created_By_Product_Id  bigint      not null,
+    Deleted_at             datetime(6) not null,
+    Updated_At             datetime    not null,
+    Review_Content         varchar(500) not null,
+    Deleted_By             varchar(500) not null
+);
 
 ```
 
@@ -223,11 +246,12 @@ create table review
 - JAVA
 - MySQL
 - Spring Boot
-- GIT
-- GitHUB
+- Git
+- GitHub
 - GRADLE
 
 ---
 ## ■ Demo Video 링크
+
 
 발표제작 참고 출처
