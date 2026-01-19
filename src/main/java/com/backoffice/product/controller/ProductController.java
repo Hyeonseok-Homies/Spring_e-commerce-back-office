@@ -8,8 +8,12 @@ import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +28,7 @@ public class ProductController {
   @PostMapping
   public ResponseEntity<ProductCreateResponse> create(
       @Login SessionAdmin sessionAdmin,
-      @RequestBody ProductCreateRequest request,
+      @Valid @RequestBody ProductCreateRequest request,
       HttpServletRequest httpRequest) {
 
     Long adminId = sessionAdmin.getId();
@@ -36,15 +40,14 @@ public class ProductController {
   public ResponseEntity<Page<ProductGetResponse>> getAll(
       @Login SessionAdmin sessionAdmin,
       @RequestParam(required = false) String name,
-      @RequestParam(defaultValue = "1") Integer page,
-      @RequestParam(defaultValue = "10 ") Integer size,
-      @RequestParam(defaultValue = "createdAt") String sortBy,
-      @RequestParam(defaultValue = "desc") String sortOrder,
       @RequestParam(required = false) String category,
-      @RequestParam(required = false) ProductStatus status) {
+      @RequestParam(required = false) ProductStatus status,
+      @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+          Pageable pageable) {
 
+    // 검색 조건(name, category, status)과 페이징 정보(pageable)를 서비스에 전달
     return ResponseEntity.status(HttpStatus.OK)
-        .body(productService.getAll(name, page, size, sortBy, sortOrder, category, status));
+        .body(productService.getAll(name, category, status, pageable));
   }
 
   @GetMapping("/{id}")
@@ -57,7 +60,7 @@ public class ProductController {
   public ResponseEntity<ProductUpdateResponse> update(
       @Login SessionAdmin sessionAdmin,
       @PathVariable Long id,
-      @RequestBody ProductUpdateRequest request) {
+      @Valid @RequestBody ProductUpdateRequest request) {
     return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, request));
   }
 

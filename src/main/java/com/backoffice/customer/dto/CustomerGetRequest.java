@@ -1,16 +1,29 @@
 package com.backoffice.customer.dto;
 
 import com.backoffice.customer.entity.CustomerStatus;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
 public class CustomerGetRequest {
 
   private String keyword; // 이름, 이메일
-  private int page = 1; // 기본값 1
-  private int pageSize = 10; // 기본값 10
-  private String sortBy = "createdAt"; // 정렬 기준 -> 이름, 이메일, 가입일 -> 값이 있으면 덮어씌워짐/없으면 기본값(초기화)대로 들어감
-  private String direction = "desc"; // 정렬 순서 -> asc, desc
+
+  @Min(value = 1, message = "페이지 번호는 1 이상이어야 합니다.")
+  private int page = 1;
+
+  @Min(value = 1, message = "페이지 크기는 1 이상이어야 합니다.")
+  @Max(value = 100, message = "페이지 크기는 최대 100까지 가능합니다.")
+  private int pageSize = 10;
+
+  @NotBlank(message = "정렬 기준은 필수입니다.")
+  private String sortBy = "createdAt";
+
+  @NotBlank(message = "정렬 방향은 필수입니다.")
+  private String direction = "desc";
+
   CustomerStatus status; // 상태 enum status
 
   // 상태 필터는 세션에서 가져와야할 것 같음..

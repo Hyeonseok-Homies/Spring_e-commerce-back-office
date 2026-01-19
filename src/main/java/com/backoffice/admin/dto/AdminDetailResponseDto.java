@@ -13,7 +13,7 @@ public class AdminDetailResponseDto {
   private final String role;
   private final String status;
   private final LocalDateTime createdAt;
-  private final LocalDateTime modifiedAt;
+  private final LocalDateTime updatedAt;
   private final String phoneNumber;
   private final LocalDateTime approvedAt;
 
@@ -24,7 +24,7 @@ public class AdminDetailResponseDto {
     this.role = admin.getRole().name();
     this.status = admin.getStatus().name();
     this.createdAt = admin.getCreatedAt();
-    this.modifiedAt = admin.getModifiedAt();
+    this.updatedAt = admin.getUpdatedAt();
     this.phoneNumber = admin.getPhoneNumber();
     this.approvedAt = admin.getApprovedAt();
   }
