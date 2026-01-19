@@ -41,17 +41,7 @@ public class ReviewService {
 
     List<ReviewResponseDto.ReviewListElementDto> dtoList =
         reviewPage.getContent().stream()
-            .map(
-                review ->
-                    ReviewResponseDto.ReviewListElementDto.builder()
-                        .id(review.getId())
-                        .orderNumber(review.getOrderNumber())
-                        .customerName(review.getCustomerName())
-                        .productName(review.getProductName())
-                        .grade(review.getGrade())
-                        .reviewContent(review.getReviewContent())
-                        .createdAt(review.getCreatedAt())
-                        .build())
+            .map(ReviewResponseDto.ReviewListElementDto::new)
             .collect(Collectors.toList());
 
     return new ReviewResponseDto(dtoList, reviewPage);
@@ -65,14 +55,7 @@ public class ReviewService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰 ID입니다: " + id));
 
-    return ReviewDetailsResponseDto.builder()
-        .productName(review.getProductName())
-        .customerName(review.getCustomerName())
-        .customerEmail(review.getCustomerEmail())
-        .createdAt(review.getCreatedAt())
-        .grade(review.getGrade())
-        .reviewContent(review.getReviewContent())
-        .build();
+    return new ReviewDetailsResponseDto(review);
   }
 
   @Transactional
@@ -83,12 +66,9 @@ public class ReviewService {
         reviewRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
-
     review.delete(admin.getEmail());
-
     reviewRepository.delete(review);
-
-    return ReviewDeleteResponseDto.builder().customerName(review.getCustomerName()).build();
+    return new ReviewDeleteResponseDto(review);
   }
 
   private void validateAdmin(SessionAdmin admin) {

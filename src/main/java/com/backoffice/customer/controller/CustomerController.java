@@ -27,12 +27,12 @@ public class CustomerController {
       @Login SessionAdmin sessionAdmin,
       // CustomerGetRequest 정렬조건을 request에 담아서 불러옴
       //      @ModelAttribute CustomerGetRequest request,
-      @RequestParam String keyword,
-      @RequestParam CustomerStatus status,
+      @RequestParam(required = false) String keyword,
+      @RequestParam(required = false) CustomerStatus status,
       @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
           Pageable pageable) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(customerService.findAll(new CustomerGetRequest(), pageable));
+        .body(customerService.findAll(keyword, status, pageable));
   }
 
   // 고객 상세 (단건) 조회

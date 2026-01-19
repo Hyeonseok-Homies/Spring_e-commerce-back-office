@@ -1,6 +1,6 @@
 package com.backoffice.review.dto;
 
-import lombok.Builder;
+import com.backoffice.review.entity.Review;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -14,19 +14,12 @@ public class ReviewDetailsResponseDto {
   private int grade;
   private String reviewContent;
 
-  @Builder
-  public ReviewDetailsResponseDto(
-      String productName,
-      String customerName,
-      String customerEmail,
-      LocalDateTime createdAt,
-      int grade,
-      String reviewContent) {
-    this.productName = productName;
-    this.customerName = customerName;
-    this.customerEmail = customerEmail;
-    this.createdAt = createdAt;
-    this.grade = grade;
-    this.reviewContent = reviewContent;
+  public ReviewDetailsResponseDto(Review review) {
+    this.productName = review.getProduct().getName();
+    this.customerName = review.getCustomer().getName();
+    this.customerEmail = review.getCustomer().getEmail();
+    this.createdAt = review.getCreatedAt();
+    this.grade = review.getGrade();
+    this.reviewContent = review.getReviewContent();
   }
 }

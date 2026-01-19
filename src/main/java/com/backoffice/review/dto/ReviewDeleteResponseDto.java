@@ -1,10 +1,14 @@
 package com.backoffice.review.dto;
 
-import lombok.Builder;
+import com.backoffice.review.entity.Review;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class ReviewDeleteResponseDto {
   private String customerName;
+
+  public ReviewDeleteResponseDto(Review review) {
+
+    this.customerName = review.getCustomer().getName();
+  }
 }

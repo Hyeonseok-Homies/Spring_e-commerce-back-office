@@ -22,20 +22,21 @@ public class CustomerService {
   // 고객 전체 조회
   @Transactional(readOnly = true)
   // 정렬 기준 List -> Page 로 변경 (page 확인을 위해서 변경)
-  public Page<CustomerGetResponse> findAll(CustomerGetRequest request, Pageable pageable) {
+  public Page<CustomerGetResponse> findAll(
+      String keyword, CustomerStatus status, Pageable pageable) {
 
     // 검색 조건 초기화 - 동적 쿼리 생성
     Specification<Customer> spec = Specification.anyOf();
 
     // 키워드(이름, 이메일)가 null이 아니고 비어있지도 않을 때 -> 키워드가 있을 때
     // 이름 조건 keyword, 이메일 조건 keyword 가 포함된 데이터만 필터링해서 각각 넣어주기 위해서 설정
-    if (request.getKeyword() != null && !request.getKeyword().trim().isEmpty()) {
-      spec = spec.and(CustomerSpec.searchByKeyword(request.getKeyword()));
+    if (keyword != null && !keyword.trim().isEmpty()) {
+      spec = spec.and(CustomerSpec.searchByKeyword(keyword));
     }
 
     // 상태 status 필터
-    if (request.getStatus() != null) {
-      spec = spec.and(CustomerSpec.equalStatus(request.getStatus()));
+    if (status != null) {
+      spec = spec.and(CustomerSpec.equalStatus(status));
     }
 
     Page<Customer> customers = customerRepository.findAll(spec, pageable);

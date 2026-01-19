@@ -205,7 +205,7 @@ public class AdminService {
     return updateAdmin(currentAdminId, requestDto);
   }
 
-  //비밀번호 변경된거 인코딩해서 넣기
+  // 비밀번호 변경된거 인코딩해서 넣기
   // 11. [비밀번호 변경] 새로운 비밀번호로 업데이트
   @Transactional
   public void changePassword(Long adminId, String newPassword) {
@@ -213,7 +213,7 @@ public class AdminService {
         adminRepository
             .findById(adminId)
             .orElseThrow(() -> new IllegalArgumentException("해당 관리자가 없습니다."));
-      String encodedPassword2 = passwordEncoder.encode(newPassword);
+    String encodedPassword2 = passwordEncoder.encode(newPassword);
     admin.changePassword(encodedPassword2); // 엔티티에 해당 메서드 구현 필요
   }
   // --------------전민우--------

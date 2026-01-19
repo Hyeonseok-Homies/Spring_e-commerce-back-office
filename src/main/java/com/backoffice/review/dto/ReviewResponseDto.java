@@ -1,6 +1,6 @@
 package com.backoffice.review.dto;
 
-import lombok.Builder;
+import com.backoffice.review.entity.Review;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
@@ -26,7 +26,6 @@ public class ReviewResponseDto {
   }
 
   @Getter
-  @Builder
   public static class ReviewListElementDto {
     private Long id;
     private Long orderNumber;
@@ -35,5 +34,16 @@ public class ReviewResponseDto {
     private int grade;
     private String reviewContent;
     private LocalDateTime createdAt;
+
+    // 이 생성자가 핵심입니다.
+    public ReviewListElementDto(Review review) {
+      this.id = review.getId();
+      this.orderNumber = review.getOrder().getId();
+      this.customerName = review.getCustomer().getName();
+      this.productName = review.getProduct().getName();
+      this.grade = review.getGrade();
+      this.reviewContent = review.getReviewContent();
+      this.createdAt = review.getCreatedAt();
+    }
   }
 }
