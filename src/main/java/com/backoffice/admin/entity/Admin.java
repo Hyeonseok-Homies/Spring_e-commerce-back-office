@@ -1,6 +1,6 @@
 package com.backoffice.admin.entity;
 
-import com.backoffice.error.BadRequestException;
+import com.backoffice.exception.BadRequestException;
 import com.backoffice.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

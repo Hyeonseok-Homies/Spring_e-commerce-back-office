@@ -36,19 +36,17 @@ public class Customer extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private CustomerStatus status;
 
-  @OneToMany (mappedBy = "customer")
+  @OneToMany(mappedBy = "customer")
   private List<Order> orders = new ArrayList<>();
 
   // 총 주문 수 계산 메서드 (개수)
   public long getTotalOrders() {
-      return orders.size();
+    return orders.size();
   }
 
   // 총 구매 금액 (합계)
-  public long getTotalPurchaseAmount () {
-      return orders.stream()
-              .mapToLong(Order::getTotalPrice)
-              .sum();
+  public long getTotalPurchaseAmount() {
+    return orders.stream().mapToLong(Order::getPrice).sum();
   }
 
   // 생성자

@@ -2,23 +2,21 @@ package com.backoffice.admin.controller;
 
 import com.backoffice.admin.config.Login;
 import com.backoffice.admin.dto.*;
-import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.entity.AdminRole;
 import com.backoffice.admin.entity.AdminStatus;
 import com.backoffice.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.data.autoconfigure.web.DataWebProperties;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/admins")

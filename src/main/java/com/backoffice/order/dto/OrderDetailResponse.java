@@ -28,7 +28,7 @@ public class OrderDetailResponse {
     this.productName = order.getProduct().getName();
     this.quantity = order.getQuantity();
     this.price = order.getPrice();
-    this.orderedAt = order.getOrderedAt();
+    this.orderedAt = order.getCreatedAt();
     this.status = order.getStatus();
 
     if (order.getAdmin() == null) {

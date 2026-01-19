@@ -79,7 +79,7 @@ public class OrderService {
         savedOrder.getQuantity(),
         totalPrice,
         savedOrder.getStatus(),
-        savedOrder.getOrderedAt(),
+        savedOrder.getCreatedAt(),
         savedOrder.getUpdatedAt(),
         customer.getName(),
         admin.getName());

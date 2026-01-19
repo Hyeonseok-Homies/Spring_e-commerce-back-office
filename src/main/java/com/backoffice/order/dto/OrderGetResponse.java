@@ -26,7 +26,7 @@ public class OrderGetResponse {
     this.productName = order.getProduct().getName();
     this.quantity = order.getQuantity();
     this.price = order.getPrice();
-    this.orderedAt = order.getOrderedAt();
+    this.orderedAt = order.getCreatedAt();
     this.status = order.getStatus();
     this.adminName = (order.getAdmin() == null) ? null : order.getAdmin().getName();
   }

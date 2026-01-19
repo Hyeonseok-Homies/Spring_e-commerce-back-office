@@ -1,6 +1,6 @@
 package com.backoffice.review.entity;
 
-import com.backoffice.admin.entity.BaseEntity;
+import com.backoffice.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

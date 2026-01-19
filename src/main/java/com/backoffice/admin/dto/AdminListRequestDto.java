@@ -1,6 +1,5 @@
 package com.backoffice.admin.dto;
 
-import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.entity.AdminRole;
 import com.backoffice.admin.entity.AdminStatus;
 import jakarta.validation.constraints.Max;

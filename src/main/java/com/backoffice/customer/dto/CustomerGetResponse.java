@@ -23,8 +23,7 @@ public class CustomerGetResponse {
       CustomerStatus status,
       LocalDateTime createdDate,
       Long totalOrders,
-      Long totalPurchaseAmount
-  ) {
+      Long totalPurchaseAmount) {
     this.id = id;
     this.name = name;
     this.email = email;

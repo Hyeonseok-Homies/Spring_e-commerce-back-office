@@ -1,4 +1,4 @@
-package com.backoffice.error;
+package com.backoffice.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

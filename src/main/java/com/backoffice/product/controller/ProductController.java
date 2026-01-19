@@ -2,12 +2,10 @@ package com.backoffice.product.controller;
 
 import com.backoffice.admin.config.Login;
 import com.backoffice.admin.dto.SessionAdmin;
-import com.backoffice.admin.service.AdminService;
 import com.backoffice.product.dto.*;
 import com.backoffice.product.entity.ProductStatus;
 import com.backoffice.product.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

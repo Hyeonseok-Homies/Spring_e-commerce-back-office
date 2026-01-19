@@ -23,7 +23,7 @@ public abstract class BaseEntity {
   @CreatedDate
   @Column(updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
-  private LocalDateTime orderedAt;
+  private LocalDateTime createdAt;
 
   @LastModifiedDate
   @Temporal(TemporalType.TIMESTAMP)

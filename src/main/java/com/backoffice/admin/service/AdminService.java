@@ -6,14 +6,13 @@ import com.backoffice.admin.entity.Admin;
 import com.backoffice.admin.entity.AdminRole;
 import com.backoffice.admin.entity.AdminStatus;
 import com.backoffice.admin.repository.AdminRepository;
-import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,9 +55,9 @@ public class AdminService {
     Admin admin =
         adminRepository
             .findByEmail(request.getEmail())
-            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 이메일입니다."));
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
     if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
-      throw new NoSuchElementException("비밀번호가 일치하지 않습니다.");
+      throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
     switch (admin.getStatus()) {
       case INACTIVE -> throw new IllegalStateException("계정이 비활성 상태입니다.");

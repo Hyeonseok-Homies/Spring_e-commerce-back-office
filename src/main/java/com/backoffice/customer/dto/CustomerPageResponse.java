@@ -1,9 +1,7 @@
 package com.backoffice.customer.dto;
 
-import com.backoffice.customer.entity.CustomerStatus;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class CustomerPageResponse {

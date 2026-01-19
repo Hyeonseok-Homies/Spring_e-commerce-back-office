@@ -1,4 +1,5 @@
 package com.backoffice.common;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class AllDto<T> {
 
   private int status; // HTTP 상태 코드 (예: 200, 201)

@@ -1,7 +1,5 @@
 package com.backoffice.admin.dto;
 
-import com.backoffice.admin.entity.AdminRole;
-import com.backoffice.admin.entity.AdminStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
