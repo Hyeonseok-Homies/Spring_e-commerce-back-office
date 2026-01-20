@@ -252,6 +252,4 @@ create table review
 
 ---
 ## ■ Demo Video 링크
-
-
-발표제작 참고 출처
+https://drive.google.com/file/d/1Bosq3PkZXSXMNr7dR-iM9o3sNDIHqn9m/view?usp=drive_link
